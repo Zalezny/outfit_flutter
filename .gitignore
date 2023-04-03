@@ -43,5 +43,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Maine
+# Private files
 lib/web_api/const_database.dart
