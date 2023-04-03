@@ -7,13 +7,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:outfit_flutter/app.dart';
 
 import 'package:outfit_flutter/main.dart';
+import 'package:outfit_flutter/web_api/connections/outfit_connection.dart';
 
-void main() {
+void main() async {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const App());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
@@ -27,4 +29,10 @@ void main() {
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
+
+  // testWidgets('is correct function getOutfits', (tester) async {
+  //   await tester.runAsync(() {
+  //     expect(await OutfitConnection().getOutfits(), 200);
+  //   })
+  // })
 }
