@@ -1,6 +1,12 @@
 part of 'outfit_bloc.dart';
 
 @immutable
-abstract class OutfitState {}
+abstract class OutfitState {
+  const OutfitState();
+}
 
-class OutfitInitial extends OutfitState {}
+class OutfitInitial extends OutfitState {
+
+  @override
+  String toString() => 'OutfitInitial {}';
+}
