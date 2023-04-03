@@ -1,12 +1,30 @@
 part of 'outfit_bloc.dart';
 
 @immutable
-abstract class OutfitState {
-  const OutfitState();
+abstract class OutfitState {}
+
+// class OutfitInitial extends OutfitState {
+//   @override
+//   String toString() => 'OutfitInitial {}';
+// }
+
+class OutfitLoadingState extends OutfitState {
+  @override
+  String toString() => 'OutfitProgress {}';
 }
 
-class OutfitInitial extends OutfitState {
+class OutfitFailState extends OutfitState {
+  final String message;
+  OutfitFailState(this.message);
 
   @override
-  String toString() => 'OutfitInitial {}';
+  String toString() => 'OutfitFail {message: $message}';
+}
+
+class OutfitSuccessState extends OutfitState {
+  final OutfitListDto model;
+  OutfitSuccessState(this.model);
+
+  @override
+  String toString() => 'OutfitSuccess {model: $model}';
 }
