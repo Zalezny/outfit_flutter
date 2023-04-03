@@ -7,5 +7,4 @@ import 'app.dart';
 void main() {
   runApp(const App());
   setupDependencyInjection();
-   OutfitConnection().getOutfits().then((value) => print(value));
 }
