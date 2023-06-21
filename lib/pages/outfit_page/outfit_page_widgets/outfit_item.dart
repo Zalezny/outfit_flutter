@@ -23,6 +23,7 @@ class OutfitItem extends StatelessWidget {
                 child: Text(
                   outfit.title!,
                   style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: TextAlign.center,
                 )),
           ),
           showBin
