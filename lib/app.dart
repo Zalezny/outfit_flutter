@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:outfit_flutter/pages/outfit_page/outfit_page.dart';
+import 'package:outfit_flutter/theme/default_theme.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -9,10 +9,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Outfit Katya',
-      theme: ThemeData(
-        primaryColor: Colors.red,
-        primarySwatch: Colors.blue,
-      ),
+      theme: DefaultTheme().buildThemeData(),
       home: const OutfitPage(),
     );
   }

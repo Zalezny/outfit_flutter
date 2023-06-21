@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:outfit_flutter/di/dependency_injection.dart';
+import 'package:outfit_flutter/di/injectable.dart';
 
 import 'app.dart';
 
 void main() {
-  setupDependencyInjection();
+  configureDependencies();
   runApp(const App());
 }

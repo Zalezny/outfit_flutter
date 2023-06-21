@@ -1,11 +1,13 @@
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:injectable/injectable.dart';
 import 'package:outfit_flutter/web_api/services/api_service.dart';
 import 'dart:convert';
 import '../const_database.dart';
 import '../dto/outfit_list_dto.dart';
 
+@lazySingleton
 class OutfitConnection {
   final apiService = GetIt.I<ApiService>();
 
