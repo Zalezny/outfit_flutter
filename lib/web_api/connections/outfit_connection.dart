@@ -4,7 +4,6 @@ import 'package:http/http.dart';
 import 'package:outfit_flutter/web_api/services/api_service.dart';
 import 'dart:convert';
 import '../const_database.dart';
-import '../dto/outfit_dto.dart';
 import '../dto/outfit_list_dto.dart';
 
 class OutfitConnection {

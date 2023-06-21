@@ -9,9 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:outfit_flutter/app.dart';
 
-import 'package:outfit_flutter/main.dart';
-import 'package:outfit_flutter/web_api/connections/outfit_connection.dart';
-
 void main() async {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.

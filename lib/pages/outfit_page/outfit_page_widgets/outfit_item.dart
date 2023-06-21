@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
 class OutfitItem extends StatelessWidget {
@@ -10,8 +8,14 @@ class OutfitItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.all(12),
       child: Center(
-        child: Text(outfit.title!, style: TextStyle(fontWeight: FontWeight.bold),),
+        child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              outfit.title!,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+            )),
       ),
     );
   }

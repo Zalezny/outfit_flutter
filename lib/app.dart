@@ -1,7 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:outfit_flutter/pages/outfit_page/outfit_page.dart';
 
 class App extends StatelessWidget {
@@ -12,6 +10,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Outfit Katya',
       theme: ThemeData(
+        primaryColor: Colors.red,
         primarySwatch: Colors.blue,
       ),
       home: const OutfitPage(),
