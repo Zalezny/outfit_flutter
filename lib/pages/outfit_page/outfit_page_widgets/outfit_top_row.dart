@@ -16,14 +16,27 @@ class OutfitTopRow extends StatelessWidget {
             "Outfits",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
           ),
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: onIconClicked,
-            child: const Icon(
-              Icons.delete,
-              color: Colors.white,
-            ),
-          ),
+          Row(
+            children: [
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: onIconClicked,
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(width: 24),
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {},
+                child: const Icon(
+                  Icons.add_box_rounded,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
