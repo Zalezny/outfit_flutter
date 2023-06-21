@@ -40,6 +40,7 @@ class DefaultTheme {
 
   final ColorScheme _schemeOfcolors = ColorScheme.fromSwatch().copyWith(
     primary: const Color.fromRGBO(228, 18, 67, 1),
+    secondary: Color.fromARGB(255, 233, 65, 104),
   );
 
   MaterialColor _createMaterialColor(Color color) {
