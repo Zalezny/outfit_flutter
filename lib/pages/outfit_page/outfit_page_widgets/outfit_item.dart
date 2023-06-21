@@ -14,7 +14,7 @@ class OutfitItem extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Text(
               outfit.title!,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+              style: Theme.of(context).textTheme.titleLarge,
             )),
       ),
     );

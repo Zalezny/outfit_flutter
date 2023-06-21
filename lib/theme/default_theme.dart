@@ -18,16 +18,18 @@ class DefaultTheme {
             titleLarge: const TextStyle(
               fontFamily: 'Roboto',
               fontWeight: FontWeight.bold,
-              fontSize: 18,
+              fontSize: 26,
             ),
             titleMedium: const TextStyle(
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.bold,
-                fontSize: 14),
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
             titleSmall: const TextStyle(
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.bold,
-                fontSize: 12),
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
             headlineSmall: const TextStyle(
               fontFamily: 'Roboto',
               fontSize: 16,
