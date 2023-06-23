@@ -4,11 +4,8 @@ import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 class OutfitItem extends StatelessWidget {
   final OutfitDto outfit;
   final bool showBin;
-  const OutfitItem({
-    super.key,
-    required this.outfit,
-    required this.showBin,
-  });
+  final Function(String) onRemoveItem;
+  const OutfitItem({super.key, required this.outfit, required this.showBin, required this.onRemoveItem});
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +51,7 @@ class OutfitItem extends StatelessWidget {
                                 TextButton(
                                   onPressed: () {
                                     //TODO: remove this item in database and local
+                                    onRemoveItem(outfit.sId!);
                                     Navigator.of(context).pop();
                                   },
                                   child: const Text("TAK"),

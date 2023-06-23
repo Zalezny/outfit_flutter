@@ -25,6 +25,12 @@ class _OutfitPageState extends State<OutfitPage> {
     });
   }
 
+  void _onRemoveItem(String id) {
+    final index = outfits.indexWhere((element) => element.sId == id);
+    outfits.removeAt(index);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -50,8 +56,10 @@ class _OutfitPageState extends State<OutfitPage> {
                               shrinkWrap: true,
                               itemCount: outfits.length,
                               itemBuilder: (ctx, index) => OutfitItem(
+                                    key: ValueKey(outfits[index].sId),
                                     outfit: outfits[index],
                                     showBin: _showBin,
+                                    onRemoveItem: _onRemoveItem,
                                   )),
                         ),
                       );
