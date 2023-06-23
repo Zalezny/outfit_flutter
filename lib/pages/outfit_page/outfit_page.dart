@@ -15,11 +15,12 @@ class OutfitPage extends StatefulWidget {
 }
 
 class _OutfitPageState extends State<OutfitPage> {
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showBin = false;
   final bloc = OutfitBloc(GetIt.I<OutfitConnection>());
   List<OutfitDto> outfits = [];
 
-  void changeShowBin() {
+  void _changeShowBin() {
     setState(() {
       _showBin = !_showBin;
     });
@@ -31,14 +32,45 @@ class _OutfitPageState extends State<OutfitPage> {
     setState(() {});
   }
 
+  void _showBottomSheet() {
+    showModalBottomSheet(
+        context: scaffoldKey.currentContext!,
+        builder: ((context) {
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: TextFormField(
+                cursorColor: Theme.of(context).primaryColor,
+                maxLength: 18,
+                decoration: const InputDecoration(
+                  labelText: "Set outfit name",
+                  labelStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                  border: OutlineInputBorder(),
+                ),
+                onFieldSubmitted: (outfitName) {
+                  //TODO: send to database new outfit
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          );
+        }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        key: scaffoldKey,
         body: Column(
           children: [
             OutfitTopRow(
-              onIconClicked: changeShowBin,
+              onDeleteClicked: _changeShowBin,
+              onAddClicked: _showBottomSheet,
             ),
             BlocProvider(
                 create: (context) => bloc..add(SendOutfitEvent()),

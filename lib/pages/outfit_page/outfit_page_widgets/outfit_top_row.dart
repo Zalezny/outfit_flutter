@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class OutfitTopRow extends StatelessWidget {
-  final VoidCallback onIconClicked;
-  const OutfitTopRow({super.key, required this.onIconClicked});
+  final VoidCallback onDeleteClicked;
+  final VoidCallback onAddClicked;
+  const OutfitTopRow({
+    super.key,
+    required this.onDeleteClicked,
+    required this.onAddClicked,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,7 @@ class OutfitTopRow extends StatelessWidget {
             children: [
               GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: onIconClicked,
+                onTap: onDeleteClicked,
                 child: const Icon(
                   Icons.delete,
                   color: Colors.white,
@@ -29,7 +34,7 @@ class OutfitTopRow extends StatelessWidget {
               const SizedBox(width: 24),
               GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: () {},
+                onTap: onAddClicked,
                 child: const Icon(
                   Icons.add_box_rounded,
                   color: Colors.white,
