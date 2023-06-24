@@ -28,9 +28,7 @@ class _OutfitPageState extends State<OutfitPage> {
   }
 
   void _onRemoveItem(String id) {
-    final index = outfits.indexWhere((element) => element.sId == id);
-    outfits.removeAt(index);
-    setState(() {});
+    bloc.add(DeleteOutfitEvent(id));
   }
 
   void _showBottomSheet() {
@@ -52,14 +50,14 @@ class _OutfitPageState extends State<OutfitPage> {
                 border: OutlineInputBorder(),
               ),
               onFieldSubmitted: (outfitName) {
-                outfitConnection.postOutfit(outfitName);
+                bloc.add(AddOutfitEvent(OutfitDto(title: outfitName)));
                 Navigator.of(context).pop();
               },
             ),
           ),
         );
       }),
-    ).whenComplete(() => bloc.add(SendOutfitEvent()));
+    );
   }
 
   @override
@@ -75,37 +73,40 @@ class _OutfitPageState extends State<OutfitPage> {
               onAddClicked: _showBottomSheet,
             ),
             BlocProvider(
-                create: (context) => bloc..add(SendOutfitEvent()),
-                child: BlocBuilder<OutfitBloc, OutfitState>(
-                  builder: (context, state) {
-                    if (state is OutfitSuccessState) {
-                      outfits = state.model.outfits!.reversed.toList();
-                      return Expanded(
-                        child: RefreshIndicator(
-                          displacement: 80.0,
-                          onRefresh: () async {
-                            bloc.add(SendOutfitEvent());
-                          },
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: outfits.length,
-                              itemBuilder: (ctx, index) => OutfitItem(
-                                    key: ValueKey(outfits[index].sId),
-                                    outfit: outfits[index],
-                                    showBin: _showBin,
-                                    onRemoveItem: _onRemoveItem,
-                                  )),
-                        ),
-                      );
-                    } else if (state is OutfitFailState) {
-                      return const Text("Failed to reload data");
-                    } else {
-                      return const Center(
+              create: (context) => bloc..add(InitOutfitEvent()),
+              child: BlocBuilder<OutfitBloc, OutfitState>(
+                builder: (context, state) {
+                  if (state is OutfitSuccessState) {
+                    outfits = state.model;
+                    return Expanded(
+                      child: RefreshIndicator(
+                        displacement: 80.0,
+                        onRefresh: () async {
+                          bloc.add(InitOutfitEvent());
+                        },
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: outfits.length,
+                            itemBuilder: (ctx, index) => OutfitItem(
+                                  key: ValueKey(outfits[index].sId),
+                                  outfit: outfits[index],
+                                  showBin: _showBin,
+                                  onRemoveItem: _onRemoveItem,
+                                )),
+                      ),
+                    );
+                  } else if (state is OutfitFailState) {
+                    return const Text("Failed to reload data");
+                  } else {
+                    return const Expanded(
+                      child: Center(
                         child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                )),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),

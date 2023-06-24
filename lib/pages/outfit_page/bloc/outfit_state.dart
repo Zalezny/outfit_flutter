@@ -22,7 +22,7 @@ class OutfitFailState extends OutfitState {
 }
 
 class OutfitSuccessState extends OutfitState {
-  final OutfitListDto model;
+  final List<OutfitDto> model;
   OutfitSuccessState(this.model);
 
   @override
