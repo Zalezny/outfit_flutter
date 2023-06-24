@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:outfit_flutter/pages/outfit_page/bloc/outfit_bloc.dart';
-import 'package:outfit_flutter/pages/outfit_page/outfit_page_widgets/outfit_item.dart';
-import 'package:outfit_flutter/pages/outfit_page/outfit_page_widgets/outfit_top_row.dart';
+import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_item.dart';
+import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_top_row.dart';
 import 'package:outfit_flutter/web_api/connections/outfit_connection.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
@@ -61,52 +61,55 @@ class _OutfitPageState extends State<OutfitPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        key: scaffoldKey,
-        body: Column(
-          children: [
-            OutfitTopRow(
-              onDeleteClicked: _changeShowBin,
-              onAddClicked: _showBottomSheet,
-            ),
-            BlocProvider(
-              create: (context) => bloc..add(InitOutfitEvent()),
-              child: BlocBuilder<OutfitBloc, OutfitState>(
-                builder: (context, state) {
-                  if (state is OutfitSuccessState) {
-                    outfits = state.model;
-                    return Expanded(
-                      child: RefreshIndicator(
-                        displacement: 80.0,
-                        onRefresh: () async {
-                          bloc.add(InitOutfitEvent());
-                        },
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: outfits.length,
-                            itemBuilder: (ctx, index) => OutfitItem(
-                                  key: ValueKey(outfits[index].sId),
-                                  outfit: outfits[index],
-                                  showBin: _showBin,
-                                  onRemoveItem: _onRemoveItem,
-                                )),
-                      ),
-                    );
-                  } else if (state is OutfitFailState) {
-                    return const Text("Failed to reload data");
-                  } else {
-                    return const Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                },
+    return Container(
+      color: Theme.of(context).primaryColorDark,
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          key: scaffoldKey,
+          body: Column(
+            children: [
+              OutfitTopRow(
+                onDeleteClicked: _changeShowBin,
+                onAddClicked: _showBottomSheet,
               ),
-            ),
-          ],
+              BlocProvider(
+                create: (context) => bloc..add(InitOutfitEvent()),
+                child: BlocBuilder<OutfitBloc, OutfitState>(
+                  builder: (context, state) {
+                    if (state is OutfitSuccessState) {
+                      outfits = state.model;
+                      return Expanded(
+                        child: RefreshIndicator(
+                          displacement: 80.0,
+                          onRefresh: () async {
+                            bloc.add(InitOutfitEvent());
+                          },
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: outfits.length,
+                              itemBuilder: (ctx, index) => OutfitItem(
+                                    key: ValueKey(outfits[index].sId),
+                                    outfit: outfits[index],
+                                    showBin: _showBin,
+                                    onRemoveItem: _onRemoveItem,
+                                  )),
+                        ),
+                      );
+                    } else if (state is OutfitFailState) {
+                      return const Text("Failed to reload data");
+                    } else {
+                      return const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
