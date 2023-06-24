@@ -12,8 +12,8 @@ class OutfitBloc extends Bloc<OutfitEvent, OutfitState> {
 
   OutfitBloc(this._outfitConnection) : super(OutfitLoadingState()) {
     on<OutfitEvent>((event, emit) async {
-      emit(OutfitLoadingState());
       if (event is InitOutfitEvent) {
+        emit(OutfitLoadingState());
         try {
           outfits = (await _outfitConnection.getOutfits()).outfits!.reversed.toList();
           emit(OutfitSuccessState(outfits));

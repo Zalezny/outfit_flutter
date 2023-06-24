@@ -16,7 +16,6 @@ class OutfitPage extends StatefulWidget {
 
 class _OutfitPageState extends State<OutfitPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final OutfitConnection outfitConnection = GetIt.I<OutfitConnection>();
   bool _showBin = false;
   final bloc = OutfitBloc(GetIt.I<OutfitConnection>());
   List<OutfitDto> outfits = [];
