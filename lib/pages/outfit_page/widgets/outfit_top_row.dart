@@ -12,32 +12,32 @@ class OutfitTopRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.primary,
+      // color: Theme.of(context).colorScheme.primary,
       padding: const EdgeInsets.all(16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             "Outfits",
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           Row(
             children: [
               GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: onDeleteClicked,
-                child: const Icon(
+                child: Icon(
                   Icons.delete,
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                 ),
               ),
               const SizedBox(width: 24),
               GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: onAddClicked,
-                child: const Icon(
+                child: Icon(
                   Icons.add_box_rounded,
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColorLight,
                 ),
               ),
             ],

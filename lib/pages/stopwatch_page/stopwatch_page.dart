@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:outfit_flutter/pages/stopwatch_page/widgets/top_row.dart';
+import 'package:outfit_flutter/pages/stopwatch_page/widgets/stopwatch_top_row.dart';
+import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
 class StopwatchPage extends StatelessWidget {
-  const StopwatchPage({super.key});
+  final OutfitDto outfit;
+  const StopwatchPage({super.key, required this.outfit});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class StopwatchPage extends StatelessWidget {
         child: Scaffold(
           body: Column(
             children: [
-              TopRow(),
+              StopwatchTopRow(title: outfit.title!,),
             ],
           ),
         ),

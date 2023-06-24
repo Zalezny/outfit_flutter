@@ -17,7 +17,7 @@ class OutfitItem extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const StopwatchPage()),
+            MaterialPageRoute(builder: (context) => StopwatchPage(outfit: outfit)),
           );
         },
         child: Card(
