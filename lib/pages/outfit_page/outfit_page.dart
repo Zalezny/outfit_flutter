@@ -16,6 +16,7 @@ class OutfitPage extends StatefulWidget {
 
 class _OutfitPageState extends State<OutfitPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final OutfitConnection outfitConnection = GetIt.I<OutfitConnection>();
   bool _showBin = false;
   final bloc = OutfitBloc(GetIt.I<OutfitConnection>());
   List<OutfitDto> outfits = [];
@@ -34,30 +35,31 @@ class _OutfitPageState extends State<OutfitPage> {
 
   void _showBottomSheet() {
     showModalBottomSheet(
-        context: scaffoldKey.currentContext!,
-        builder: ((context) {
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              child: TextFormField(
-                cursorColor: Theme.of(context).primaryColor,
-                maxLength: 18,
-                decoration: const InputDecoration(
-                  labelText: "Set outfit name",
-                  labelStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                  border: OutlineInputBorder(),
-                ),
-                onFieldSubmitted: (outfitName) {
-                  //TODO: send to database new outfit
-                  Navigator.of(context).pop();
-                },
+      context: scaffoldKey.currentContext!,
+      builder: ((context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: TextFormField(
+              cursorColor: Theme.of(context).primaryColor,
+              maxLength: 18,
+              decoration: const InputDecoration(
+                labelText: "Set outfit name",
+                labelStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                border: OutlineInputBorder(),
               ),
+              onFieldSubmitted: (outfitName) {
+                outfitConnection.postOutfit(outfitName);
+                Navigator.of(context).pop();
+              },
             ),
-          );
-        }));
+          ),
+        );
+      }),
+    ).whenComplete(() => bloc.add(SendOutfitEvent()));
   }
 
   @override
