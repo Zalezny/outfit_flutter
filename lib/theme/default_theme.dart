@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:outfit_flutter/theme/app_colors.dart';
 
 class DefaultTheme {
   CupertinoThemeData buildCupertinoThemeData() {
@@ -11,6 +12,9 @@ class DefaultTheme {
 
   ThemeData buildThemeData() {
     return ThemeData(
+      primaryColor: AppColors.colorPrimary,
+      primaryColorLight: AppColors.colorLight,
+      primaryColorDark: AppColors.colorDark,
       primarySwatch: _createMaterialColor(const Color(0x00e94168)),
       colorScheme: _schemeOfcolors,
       fontFamily: 'Roboto',
@@ -40,7 +44,7 @@ class DefaultTheme {
 
   final ColorScheme _schemeOfcolors = ColorScheme.fromSwatch().copyWith(
     primary: const Color.fromRGBO(228, 18, 67, 1),
-    secondary: Color.fromARGB(255, 233, 65, 104),
+    secondary: const Color.fromARGB(255, 233, 65, 104),
   );
 
   MaterialColor _createMaterialColor(Color color) {
