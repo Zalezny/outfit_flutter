@@ -30,8 +30,8 @@ class WorkTimePage extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  WorkTimeBuilder(workTimes: momHours),
-                  WorkTimeBuilder(workTimes: katyaHours),
+                  WorkTimeBuilder(workTimes: momHours.reversed.toList()),
+                  WorkTimeBuilder(workTimes: katyaHours.reversed.toList()),
                 ],
               ),
             ),
