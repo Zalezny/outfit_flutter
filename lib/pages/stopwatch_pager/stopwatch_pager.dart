@@ -36,7 +36,7 @@ class StopwatchPager extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 children: [
                   StopwatchPage(outfit: outfit),
-                  WorkTimePage(),
+                  WorkTimePage(momHours: outfit.momHours!, katyaHours: outfit.kateHours!,),
                 ],
               ),
             ),

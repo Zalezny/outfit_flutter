@@ -11,3 +11,4 @@ void main() {
   SharedPreference().saveIsKatya(ConstDatabase.isKatya);
   runApp(const App());
 }
+
