@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:outfit_flutter/pages/stopwatch_page/stopwatch_page.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
+
+import '../../stopwatch_pager/stopwatch_pager.dart';
 
 class OutfitItem extends StatelessWidget {
   final OutfitDto outfit;
@@ -17,7 +18,7 @@ class OutfitItem extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => StopwatchPage(outfit: outfit)),
+            MaterialPageRoute(builder: (context) => StopwatchPager(outfit: outfit)),
           );
         },
         child: Card(
