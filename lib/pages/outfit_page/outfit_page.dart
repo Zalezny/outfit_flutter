@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:outfit_flutter/pages/outfit_page/bloc/outfit_bloc.dart';
 import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_item.dart';
 import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_top_row.dart';
-import 'package:outfit_flutter/web_api/connections/outfit_connection.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
 class OutfitPage extends StatefulWidget {
@@ -17,7 +16,7 @@ class OutfitPage extends StatefulWidget {
 class _OutfitPageState extends State<OutfitPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showBin = false;
-  final bloc = OutfitBloc(GetIt.I<OutfitConnection>());
+  final bloc = GetIt.I<OutfitBloc>();
   List<OutfitDto> outfits = [];
 
   void _changeShowBin() {

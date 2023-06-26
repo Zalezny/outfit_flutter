@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class StopwatchTopRow extends StatelessWidget {
   final String title;
-  const StopwatchTopRow({super.key, required this.title});
+  final Function(BuildContext) onEndedClick;
+  const StopwatchTopRow({super.key, required this.title, required this.onEndedClick});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,9 @@ class StopwatchTopRow extends StatelessWidget {
           ),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: () {},
+            onTap: () {
+              onEndedClick(context);
+            },
             child: Icon(
               Icons.archive,
               color: Theme.of(context).primaryColorLight,

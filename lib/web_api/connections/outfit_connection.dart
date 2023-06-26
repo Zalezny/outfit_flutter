@@ -28,7 +28,7 @@ class OutfitConnection {
       "title": text,
       "date": formattedTime,
     };
-    final Response response = await apiService.post(ConstDatabase.toPostOutfitUrl, bodyText);
+    final Response response = await apiService.post(ConstDatabase.toPostOutfitUrl, jsonEncode(bodyText));
 
     return response.statusCode;
   }
@@ -36,6 +36,15 @@ class OutfitConnection {
   Future<int> deleteOutfit(String id) async {
     final uri = "${ConstDatabase.outfitUrl}$id";
     final Response response = await apiService.delete(uri);
+
+    return response.statusCode;
+  }
+
+  Future<int> patchEndedById(String id, bool value) async {
+    final uri = "${ConstDatabase.outfitUrl}$id";
+    final Map<String, dynamic> bodyText = {"ended": value.toString()};
+
+    final Response response = await apiService.patch(uri, jsonEncode(bodyText));
 
     return response.statusCode;
   }

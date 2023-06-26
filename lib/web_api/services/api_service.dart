@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 @lazySingleton
 class ApiService {
   Map<String, String> defaultHeaders = {
+    'Content-Type': 'application/json; charset=utf-8',
     'authorization': ConstDatabase.outfitKey,
   };
 
@@ -18,15 +19,23 @@ class ApiService {
   Future<http.Response> delete(String uri) async {
     return http.delete(
       Uri.parse(uri),
-      headers: defaultHeaders
+      headers: defaultHeaders,
     );
   }
 
-  Future<http.Response> post(String uri, Map<String,dynamic> body) async {
+  Future<http.Response> post(String uri, String body) async {
     return http.post(
       Uri.parse(uri),
       headers: defaultHeaders,
-      body: body
+      body: body,
+    );
+  }
+
+  Future<http.Response> patch(String uri, String body) async {
+    return http.patch(
+      Uri.parse(uri),
+      headers: defaultHeaders,
+      body: body,
     );
   }
 }

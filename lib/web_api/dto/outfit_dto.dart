@@ -57,6 +57,28 @@ class OutfitDto {
     data['ended'] = ended;
     return data;
   }
+
+  OutfitDto copyWith({
+    String? sId,
+  String? title,
+  String? hour,
+  String? date,
+  List<WorkTime>? momHours,
+  List<WorkTime>? kateHours,
+  int? iV,
+  bool? ended,
+  }) {
+    return OutfitDto(
+      sId: sId ?? this.sId,
+      title: title ?? this.title,
+      hour: hour ?? this.hour,
+      date: date ?? this.date,
+      momHours: momHours ?? this.momHours,
+      kateHours: kateHours ?? this.kateHours,
+      iV: iV ?? this.iV,
+      ended: ended ?? this.ended
+    );
+  }
 }
 
 

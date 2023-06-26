@@ -14,3 +14,9 @@ class AddOutfitEvent extends OutfitEvent {
   final OutfitDto outfit;
   AddOutfitEvent(this.outfit);
 }
+
+class ChangeEndedOutfitEvent extends OutfitEvent {
+  final String id;
+  final bool isEnded;
+  ChangeEndedOutfitEvent(this.id, this.isEnded);
+}
