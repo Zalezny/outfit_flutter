@@ -15,6 +15,7 @@ class StopwatchPager extends StatelessWidget {
   void endedCallback(BuildContext context) {
     final outfitBloc = GetIt.I<OutfitBloc>();
     outfitBloc.add(ChangeEndedOutfitEvent(outfit.sId!, !outfit.ended!));
+    Navigator.of(context).pop();
   }
 
   @override
