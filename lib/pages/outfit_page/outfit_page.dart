@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:outfit_flutter/pages/outfit_page/bloc/outfit_bloc.dart';
 import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_item.dart';
 import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_top_row.dart';
+import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
 class OutfitPage extends StatefulWidget {
@@ -14,10 +15,14 @@ class OutfitPage extends StatefulWidget {
 }
 
 class _OutfitPageState extends State<OutfitPage> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _sharedPref = GetIt.I<SharedPreference>();
   bool _showBin = false;
-  final bloc = GetIt.I<OutfitBloc>();
-  List<OutfitDto> outfits = [];
+  final _bloc = GetIt.I<OutfitBloc>();
+  List<OutfitDto> _outfits = [];
+  final List<String> _userList = ['Kasia', 'Mama'];
+
+  int? _choiceChipValue;
 
   void _changeShowBin() {
     setState(() {
@@ -26,12 +31,12 @@ class _OutfitPageState extends State<OutfitPage> {
   }
 
   void _onRemoveItem(String id) {
-    bloc.add(DeleteOutfitEvent(id));
+    _bloc.add(DeleteOutfitEvent(id));
   }
 
   void _showBottomSheet() {
     showModalBottomSheet(
-      context: scaffoldKey.currentContext!,
+      context: _scaffoldKey.currentContext!,
       builder: ((context) {
         return Padding(
           padding: EdgeInsets.only(
@@ -48,7 +53,7 @@ class _OutfitPageState extends State<OutfitPage> {
                 border: OutlineInputBorder(),
               ),
               onFieldSubmitted: (outfitName) {
-                bloc.add(AddOutfitEvent(OutfitDto(title: outfitName)));
+                _bloc.add(AddOutfitEvent(OutfitDto(title: outfitName)));
                 Navigator.of(context).pop();
               },
             ),
@@ -58,6 +63,46 @@ class _OutfitPageState extends State<OutfitPage> {
     );
   }
 
+  void _showStarterDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Wybierz swój profil",
+          style: Theme.of(context).textTheme.titleMedium,
+          textAlign: TextAlign.center,
+        ),
+        content: Wrap(
+          alignment: WrapAlignment.spaceEvenly,
+          spacing: 10.0,
+          children: List<Widget>.generate(_userList.length, (index) {
+            return ChoiceChip(
+                selected: _choiceChipValue == index,
+                label: Text(
+                  _userList[index],
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.white),
+                ),
+                onSelected: (selected) {
+                  _choiceChipValue = selected ? index : null;
+                  _sharedPref.saveIsKatya(_choiceChipValue == 0);
+                  Navigator.of(context).pop();
+                  setState(() {});
+                });
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _sharedPref.getIsKatya().then((isKatya) {
+      isKatya == null ? _showStarterDialog() : null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,31 +110,32 @@ class _OutfitPageState extends State<OutfitPage> {
       child: SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          key: scaffoldKey,
+          key: _scaffoldKey,
           body: Column(
             children: [
               OutfitTopRow(
                 onDeleteClicked: _changeShowBin,
                 onAddClicked: _showBottomSheet,
+                onProfileClicked: _showStarterDialog,
               ),
               BlocProvider(
-                create: (context) => bloc..add(InitOutfitEvent()),
+                create: (context) => _bloc..add(InitOutfitEvent()),
                 child: BlocBuilder<OutfitBloc, OutfitState>(
                   builder: (context, state) {
                     if (state is OutfitSuccessState) {
-                      outfits = state.model;
+                      _outfits = state.model;
                       return Expanded(
                         child: RefreshIndicator(
                           displacement: 80.0,
                           onRefresh: () async {
-                            bloc.add(InitOutfitEvent());
+                            _bloc.add(InitOutfitEvent());
                           },
                           child: ListView.builder(
                               shrinkWrap: true,
-                              itemCount: outfits.length,
+                              itemCount: _outfits.length,
                               itemBuilder: (ctx, index) => OutfitItem(
-                                    key: ValueKey(outfits[index].sId),
-                                    outfit: outfits[index],
+                                    key: ValueKey(_outfits[index].sId),
+                                    outfit: _outfits[index],
                                     showBin: _showBin,
                                     onRemoveItem: _onRemoveItem,
                                   )),

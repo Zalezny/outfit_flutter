@@ -24,7 +24,7 @@ class SharedPreference {
     return _savePreference(key, value.toString());
   }
 
-  Future<bool> _getBool(String key) async {
+  Future<bool?> _getBool(String key) async {
     switch (await _getPreference(
       key,
     )) {
@@ -33,14 +33,22 @@ class SharedPreference {
       case "true":
         return true;
     }
-    return false;
+    return null;
   }
 
   void saveIsKatya(bool value) {
     _saveBool(_isKatyaKey, value);
   }
 
-  Future<bool> getIsKatya() async {
+  Future<bool?> getIsKatya() async {
     return await _getBool(_isKatyaKey);
+  }
+
+  Future<String> getUserName() async { 
+    final isKatya = await getIsKatya();
+    if(isKatya == null) {
+      return '';
+    }
+    return isKatya ? 'KASIA' : 'MAMA';
   }
 }

@@ -12,34 +12,37 @@ class DefaultTheme {
 
   ThemeData buildThemeData() {
     return ThemeData(
-      primaryColor: AppColors.colorPrimary,
-      primaryColorLight: AppColors.colorLight,
-      primaryColorDark: AppColors.colorDark,
-      primarySwatch: _createMaterialColor(const Color(0x00e94168)),
-      colorScheme: _schemeOfcolors,
-      fontFamily: 'Roboto',
-      textTheme: ThemeData.light().textTheme.copyWith(
-            titleLarge: const TextStyle(
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.bold,
-              fontSize: 26,
+        primaryColor: AppColors.colorPrimary,
+        primaryColorLight: AppColors.colorLight,
+        primaryColorDark: AppColors.colorDark,
+        primarySwatch: _createMaterialColor(const Color(0x00e94168)),
+        colorScheme: _schemeOfcolors,
+        fontFamily: 'Roboto',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              titleLarge: const TextStyle(
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.bold,
+                fontSize: 26,
+              ),
+              titleMedium: const TextStyle(
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+              titleSmall: const TextStyle(
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              headlineSmall: const TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 16,
+              ),
             ),
-            titleMedium: const TextStyle(
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-            titleSmall: const TextStyle(
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-            headlineSmall: const TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 16,
-            ),
-          ),
-    );
+        chipTheme: ChipThemeData(
+          backgroundColor: AppColors.colorLight.withOpacity(0.4),
+          selectedColor: AppColors.colorPrimary.withOpacity(0.7),
+        ));
   }
 
   final ColorScheme _schemeOfcolors = ColorScheme.fromSwatch().copyWith(

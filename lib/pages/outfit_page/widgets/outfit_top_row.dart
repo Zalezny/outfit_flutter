@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class OutfitTopRow extends StatelessWidget {
   final VoidCallback onDeleteClicked;
   final VoidCallback onAddClicked;
+  final VoidCallback onProfileClicked;
   const OutfitTopRow({
     super.key,
     required this.onDeleteClicked,
     required this.onAddClicked,
+    required this.onProfileClicked,
   });
 
   @override
@@ -17,9 +19,22 @@ class OutfitTopRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            "Outfits",
-            style: Theme.of(context).textTheme.titleLarge,
+          Row(
+            children: [
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: onProfileClicked,
+                child: Icon(
+                  Icons.person,
+                  color: Theme.of(context).primaryColorLight,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Text(
+                "Outfits",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ],
           ),
           Row(
             children: [

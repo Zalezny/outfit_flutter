@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outfit_flutter/custom_widgets/custom_dialog.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
 import '../../stopwatch_pager/stopwatch_pager.dart';
@@ -42,31 +43,16 @@ class OutfitItem extends StatelessWidget {
                         showDialog(
                             context: context,
                             builder: (ctx) {
-                              return AlertDialog(
-                                title: Text(
-                                  "Usuń ${outfit.title}",
-                                  style: Theme.of(context).textTheme.titleMedium,
-                                ),
-                                content: Text(
-                                  "Czy napewno chcesz go usunąć?",
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text("NIE"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      onRemoveItem(outfit.sId!);
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text("TAK"),
-                                  )
-                                ],
-                              );
+                              return CustomDialog(
+                                  onPrimaryButton: () {
+                                    onRemoveItem(outfit.sId!);
+                                    Navigator.of(context).pop();
+                                  },
+                                  onSecondaryButton: null,
+                                  title: "Usuń ${outfit.title}",
+                                  description: "Czy napewno chcesz go usunąć?",
+                                  primaryButtonText: "TAK",
+                                  secondaryButtonText: "NIE");
                             });
                       },
                       child: Icon(

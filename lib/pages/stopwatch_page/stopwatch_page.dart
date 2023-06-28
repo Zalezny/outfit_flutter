@@ -15,15 +15,17 @@ class StopwatchPage extends StatefulWidget {
 class _StopwatchPageState extends State<StopwatchPage> {
   final sharedPref = GetIt.I<SharedPreference>();
   bool? isKatya;
+  String? userName;
 
   @override
   void initState() {
     super.initState();
-    _getIsKatya();
+    _getkatyaInfo();
   }
 
-  Future<void> _getIsKatya() async {
+  Future<void> _getkatyaInfo() async {
     isKatya = await sharedPref.getIsKatya();
+    userName = await sharedPref.getUserName();
     setState(() {});
   }
 
@@ -44,7 +46,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     color: Theme.of(context).primaryColorDark,
                     child: Center(
                       child: Text(
-                        "Dane zapisywane do:\nKATYA",
+                        "Dane zapisywane do:\n$userName",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
                       ),

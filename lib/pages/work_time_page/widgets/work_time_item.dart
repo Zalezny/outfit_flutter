@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:outfit_flutter/custom_widgets/custom_dialog.dart';
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
 class WorkTimeItem extends StatelessWidget {
@@ -8,24 +9,42 @@ class WorkTimeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                _formatJsonDate(workTime.date!),
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              Text(
-                _generateTimeText(workTime),
-              ),
-            ],
-          ),
-          const Divider(thickness: 1.0)
-        ],
+    return Dismissible(
+      key: key!,
+      direction: DismissDirection.endToStart,
+      onDismissed: (direction) {
+        if (direction == DismissDirection.endToStart) {
+          showDialog(
+              context: context,
+              builder: ((context) => CustomDialog(
+                    onPrimaryButton: () {},
+                    onSecondaryButton: (){},
+                    title: "Usuń ${_generateTimeText(workTime)}",
+                    description: "Czy napewno chcesz go usunąć?",
+                    primaryButtonText: "TAK",
+                    secondaryButtonText: "NIE",
+                  )));
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  _formatJsonDate(workTime.date!),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                Text(
+                  _generateTimeText(workTime),
+                ),
+              ],
+            ),
+            const Divider(thickness: 1.0)
+          ],
+        ),
       ),
     );
   }
