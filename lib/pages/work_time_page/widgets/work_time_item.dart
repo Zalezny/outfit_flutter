@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:outfit_flutter/custom_widgets/custom_dialog.dart';
 import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
+import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
 class WorkTimeItem extends StatefulWidget {
   final int index;
   final WorkTime workTime;
+  final bool isKatyaPage;
   const WorkTimeItem({
     super.key,
     required this.workTime,
     required this.index,
+    required this.isKatyaPage,
   });
 
   @override
@@ -20,17 +24,23 @@ class WorkTimeItem extends StatefulWidget {
 
 class _WorkTimeItemState extends State<WorkTimeItem> {
   late WorkTimeBloc bloc;
+  final sharedPref = GetIt.I<SharedPreference>();
+  bool? isKatya;
   @override
   void initState() {
     super.initState();
     bloc = BlocProvider.of<WorkTimeBloc>(context);
+    sharedPref.getIsKatya().then((v) {
+      isKatya = v;
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: widget.key!,
-      direction: DismissDirection.endToStart,
+      direction: widget.isKatyaPage == isKatya ? DismissDirection.endToStart : DismissDirection.none,
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
           bloc.add(DeleteLocallyWorkTimeEvent(widget.workTime.sId!));

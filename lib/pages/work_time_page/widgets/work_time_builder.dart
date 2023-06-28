@@ -62,6 +62,7 @@ class _WorkTimeBuilderState extends State<WorkTimeBuilder> {
                           key: ValueKey(state.model[index].sId!),
                           workTime: state.model[index],
                           index: index,
+                          isKatyaPage: widget.isKatyaPage,
                         );
                       },
                     ),
