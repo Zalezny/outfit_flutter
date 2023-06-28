@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:outfit_flutter/custom_widgets/custom_dialog.dart';
+import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
 class WorkTimeItem extends StatefulWidget {
+  final int index;
   final WorkTime workTime;
-  final VoidCallback onDismissApproved;
-  final VoidCallback onDismissRejected;
-  const WorkTimeItem({super.key, required this.workTime, required this. onDismissApproved, required this.onDismissRejected});
+  const WorkTimeItem({
+    super.key,
+    required this.workTime,
+    required this.index,
+  });
 
   @override
   State<WorkTimeItem> createState() => _WorkTimeItemState();
 }
 
 class _WorkTimeItemState extends State<WorkTimeItem> {
+  late WorkTimeBloc bloc;
+  @override
+  void initState() {
+    super.initState();
+    bloc = BlocProvider.of<WorkTimeBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -21,11 +33,18 @@ class _WorkTimeItemState extends State<WorkTimeItem> {
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
+          bloc.add(DeleteLocallyWorkTimeEvent(widget.workTime.sId!));
           showDialog(
             context: context,
             builder: (context) => CustomDialog(
-              onPrimaryButton: widget.onDismissApproved,
-              onSecondaryButton: widget.onDismissRejected,
+              onPrimaryButton: () {
+                bloc.add(DeleteWorkTimeEvent(widget.workTime.sId!));
+                Navigator.of(context).pop();
+              },
+              onSecondaryButton: () {
+                bloc.add(InsertLocallyWorkTimeEvent(widget.workTime, widget.index));
+                Navigator.of(context).pop();
+              },
               title: "Usuń ${_generateTimeText(widget.workTime)}",
               description: "Czy napewno chcesz go usunąć?",
               primaryButtonText: "TAK",

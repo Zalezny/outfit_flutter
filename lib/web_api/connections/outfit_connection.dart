@@ -35,7 +35,7 @@ class OutfitConnection {
 
   Future<int> deleteOutfit(String id) async {
     final uri = "${ConstDatabase.outfitUrl}$id";
-    final Response response = await apiService.delete(uri, null);
+    final Response response = await apiService.delete(uri);
 
     return response.statusCode;
   }

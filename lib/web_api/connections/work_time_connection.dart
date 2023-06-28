@@ -31,11 +31,11 @@ class WorkTimeConnection {
   Future<int> deleteWorkTime(String outfitId, String workTimeId, bool isKatya) async {
     final uri = ConstDatabase.outfitUrlByWorkTimeId(outfitId, workTimeId);
     final body = {'person': isKatya ? ConstDatabase.katyaNumber : ConstDatabase.momNumber};
-    final Response response = await _apiService.delete(uri, jsonEncode(body));
+    final Response response = await _apiService.patch(uri, jsonEncode(body));
     return response.statusCode;
   }
 
-  Future<int> insertWorkTime(String outfitId,WorkTime workTime, bool isKatya) async {
+  Future<int> insertWorkTime(String outfitId, WorkTime workTime, bool isKatya) async {
     final body = {
       'person': isKatya ? ConstDatabase.katyaNumber : ConstDatabase.momNumber,
       'hour': workTime.hour,

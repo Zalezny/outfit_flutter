@@ -16,11 +16,10 @@ class ApiService {
     );
   }
 
-  Future<http.Response> delete(String uri, String? body) async {
+  Future<http.Response> delete(String uri) async {
     return http.delete(
       Uri.parse(uri),
       headers: defaultHeaders,
-      body: body
     );
   }
 

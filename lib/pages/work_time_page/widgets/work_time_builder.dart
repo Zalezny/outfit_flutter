@@ -32,7 +32,6 @@ class _WorkTimeBuilderState extends State<WorkTimeBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: BlocProvider(
@@ -61,15 +60,8 @@ class _WorkTimeBuilderState extends State<WorkTimeBuilder> {
                       itemBuilder: (context, index) {
                         return WorkTimeItem(
                           key: ValueKey(state.model[index].sId!),
-                          onDismissApproved: () {
-                            state.model.removeAt(index);
-                          },
-                          onDismissRejected: () {
-                            final obj = state.model[index];
-                            state.model.removeAt(index);
-                            state.model.insert(index, obj);
-                          },
                           workTime: state.model[index],
+                          index: index,
                         );
                       },
                     ),
