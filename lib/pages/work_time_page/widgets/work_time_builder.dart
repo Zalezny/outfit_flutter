@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nested_scroll_views/material.dart';
 import 'package:outfit_flutter/pages/work_time_page/widgets/work_time_item.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
 import 'package:outfit_flutter/utils/total_time_helper.dart';
@@ -31,7 +32,7 @@ class WorkTimeBuilder extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: ListView.builder(
+            child: NestedListView.builder(
               itemCount: workTimes.length,
               itemBuilder: (context, index) {
                 return WorkTimeItem(
