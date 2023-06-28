@@ -3,27 +3,35 @@ import 'package:intl/intl.dart';
 import 'package:outfit_flutter/custom_widgets/custom_dialog.dart';
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
-class WorkTimeItem extends StatelessWidget {
+class WorkTimeItem extends StatefulWidget {
   final WorkTime workTime;
-  const WorkTimeItem({super.key, required this.workTime});
+  final VoidCallback onDismissApproved;
+  final VoidCallback onDismissRejected;
+  const WorkTimeItem({super.key, required this.workTime, required this. onDismissApproved, required this.onDismissRejected});
 
+  @override
+  State<WorkTimeItem> createState() => _WorkTimeItemState();
+}
+
+class _WorkTimeItemState extends State<WorkTimeItem> {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: key!,
+      key: widget.key!,
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
           showDialog(
-              context: context,
-              builder: ((context) => CustomDialog(
-                    onPrimaryButton: () {},
-                    onSecondaryButton: (){},
-                    title: "Usuń ${_generateTimeText(workTime)}",
-                    description: "Czy napewno chcesz go usunąć?",
-                    primaryButtonText: "TAK",
-                    secondaryButtonText: "NIE",
-                  )));
+            context: context,
+            builder: (context) => CustomDialog(
+              onPrimaryButton: widget.onDismissApproved,
+              onSecondaryButton: widget.onDismissRejected,
+              title: "Usuń ${_generateTimeText(widget.workTime)}",
+              description: "Czy napewno chcesz go usunąć?",
+              primaryButtonText: "TAK",
+              secondaryButtonText: "NIE",
+            ),
+          );
         }
       },
       child: Padding(
@@ -34,11 +42,11 @@ class WorkTimeItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  _formatJsonDate(workTime.date!),
+                  _formatJsonDate(widget.workTime.date!),
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 Text(
-                  _generateTimeText(workTime),
+                  _generateTimeText(widget.workTime),
                 ),
               ],
             ),
