@@ -85,7 +85,7 @@ class _WorkTimeBuilderState extends State<WorkTimeBuilder> {
             } else if (state is WorkTimeFailState) {
               return const Text('Failed to reload data');
             } else {
-              return const Expanded(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }

@@ -64,6 +64,13 @@ class _OutfitPageState extends State<OutfitPage> {
   }
 
   void _showStarterDialog() {
+    _sharedPref.getIsKatya().then((isKatya) {
+      if (isKatya != null) {
+        _choiceChipValue = isKatya ? 0 : 1;
+        setState(() {});
+      }
+    });
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -84,7 +91,7 @@ class _OutfitPageState extends State<OutfitPage> {
                   style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.white),
                 ),
                 onSelected: (selected) {
-                  _choiceChipValue = selected ? index : null;
+                  _choiceChipValue = index;
                   _sharedPref.saveIsKatya(_choiceChipValue == 0);
                   Navigator.of(context).pop();
                   setState(() {});
