@@ -48,6 +48,8 @@ class WorkTimeItem extends StatelessWidget {
   }
 
   String _generateTimeText(WorkTime wt) {
-    return '${wt.hour}:${wt.minute}:${wt.second}';
+    final String mString = (wt.minute! < 10) ? "0${wt.minute}" : "${wt.minute}";
+    final String sString = (wt.second! < 10) ? "0${wt.second}" : "${wt.second}";
+    return "${wt.hour}:$mString:$sString";
   }
 }
