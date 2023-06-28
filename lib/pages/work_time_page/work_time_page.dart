@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:outfit_flutter/pages/work_time_page/widgets/work_time_builder.dart';
-import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
 class WorkTimePage extends StatelessWidget {
-  final List<WorkTime> momHours;
-  final List<WorkTime> katyaHours;
+  final String outfitId;
   const WorkTimePage({
     super.key,
-    required this.momHours,
-    required this.katyaHours,
+    required this.outfitId,
   });
 
   @override
@@ -30,8 +27,8 @@ class WorkTimePage extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  WorkTimeBuilder(workTimes: momHours.reversed.toList()),
-                  WorkTimeBuilder(workTimes: katyaHours.reversed.toList()),
+                  WorkTimeBuilder(outfitId: outfitId, isKatyaPage: false),
+                  WorkTimeBuilder(outfitId: outfitId, isKatyaPage: true),
                 ],
               ),
             ),

@@ -39,8 +39,7 @@ class StopwatchPager extends StatelessWidget {
                 children: [
                   StopwatchPage(outfit: outfit),
                   WorkTimePage(
-                    momHours: outfit.momHours!,
-                    katyaHours: outfit.kateHours!,
+                    outfitId: outfit.sId!,
                   ),
                 ],
               ),
