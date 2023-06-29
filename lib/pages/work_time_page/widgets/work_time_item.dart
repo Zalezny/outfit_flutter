@@ -23,13 +23,13 @@ class WorkTimeItem extends StatefulWidget {
 }
 
 class _WorkTimeItemState extends State<WorkTimeItem> {
-  late WorkTimeBloc bloc;
+  late Bloc<WorkTimeEvent, WorkTimeState> bloc;
   final sharedPref = GetIt.I<SharedPreference>();
   bool? isKatya;
   @override
   void initState() {
     super.initState();
-    bloc = BlocProvider.of<WorkTimeBloc>(context);
+    bloc = widget.isKatyaPage ? BlocProvider.of<KatyaWorkTimeBloc>(context) : BlocProvider.of<MomWorkTimeBloc>(context);
     sharedPref.getIsKatya().then((v) {
       isKatya = v;
       setState(() {});

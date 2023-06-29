@@ -6,7 +6,10 @@ import 'package:outfit_flutter/web_api/dto/work_time.dart';
 part 'work_time_event.dart';
 part 'work_time_state.dart';
 
-class WorkTimeBloc extends Bloc<WorkTimeEvent, WorkTimeState> {
+mixin KatyaWorkTimeBloc on Bloc<WorkTimeEvent, WorkTimeState> {}
+mixin MomWorkTimeBloc on Bloc<WorkTimeEvent, WorkTimeState> {}
+
+class WorkTimeBloc extends Bloc<WorkTimeEvent, WorkTimeState> with KatyaWorkTimeBloc, MomWorkTimeBloc {
   final WorkTimeConnection _workTimeConnection;
   late List<WorkTime> _workTimes;
   final bool _isKatyaLists;
@@ -16,7 +19,7 @@ class WorkTimeBloc extends Bloc<WorkTimeEvent, WorkTimeState> {
       try {
         if (event is InitWorkTimeEvent) {
           emit(WorkTimeLoadingState());
-          _workTimes = (await _workTimeConnection.getWorkTimes(event.id, _isKatyaLists)).reversed.toList();
+          _workTimes = (await _workTimeConnection.getWorkTimes(_outfitId, _isKatyaLists)).reversed.toList();
           emit(WorkTimeSuccessState(_workTimes));
         } else if (event is DeleteWorkTimeEvent) {
           await _workTimeConnection.deleteWorkTime(_outfitId, event.workTimeId, _isKatyaLists);
@@ -29,7 +32,7 @@ class WorkTimeBloc extends Bloc<WorkTimeEvent, WorkTimeState> {
         } else if (event is InsertLocallyWorkTimeEvent) {
           _workTimes.insert(event.index, event.workTime);
           emit(WorkTimeSuccessState(_workTimes));
-        } else if(event is DeleteLocallyWorkTimeEvent) {
+        } else if (event is DeleteLocallyWorkTimeEvent) {
           _workTimes.removeWhere((element) => element.sId == event.workTimeId);
           emit(WorkTimeSuccessState(_workTimes));
         }
