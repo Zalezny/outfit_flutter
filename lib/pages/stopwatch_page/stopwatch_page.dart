@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:outfit_flutter/pages/stopwatch_page/widgets/stopwatch_card.dart';
 import 'package:outfit_flutter/utils/shared_preference.dart';
@@ -13,9 +14,10 @@ class StopwatchPage extends StatefulWidget {
 }
 
 class _StopwatchPageState extends State<StopwatchPage> {
-  final sharedPref = GetIt.I<SharedPreference>();
-  bool? isKatya;
-  String? userName;
+  final _sharedPref = GetIt.I<SharedPreference>();
+  final _flutterBackgroundService = FlutterBackgroundService();
+  bool? _isKatya;
+  String? _userName;
 
   @override
   void initState() {
@@ -24,15 +26,15 @@ class _StopwatchPageState extends State<StopwatchPage> {
   }
 
   Future<void> _getkatyaInfo() async {
-    isKatya = await sharedPref.getIsKatya();
-    userName = await sharedPref.getUserName();
+    _isKatya = await _sharedPref.getIsKatya();
+    _userName = await _sharedPref.getUserName();
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
-    return isKatya == null
+    return _isKatya == null
         ? const SizedBox()
         : Container(
             color: Theme.of(context).primaryColorDark,
@@ -46,13 +48,13 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     color: Theme.of(context).primaryColorDark,
                     child: Center(
                       child: Text(
-                        "Dane zapisywane do:\n$userName",
+                        "Dane zapisywane do:\n$_userName",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
                       ),
                     ),
                   ),
-                  const StopwatchCard(),
+                   StopwatchCard(),
                   Container(
                     margin: const EdgeInsets.all(8.0),
                     height: mediaQuery.height * .18,

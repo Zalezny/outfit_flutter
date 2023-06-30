@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
 
-class StopwatchCard extends StatelessWidget {
+class StopwatchCard extends StatefulWidget {
   const StopwatchCard({super.key});
+
+  @override
+  State<StopwatchCard> createState() => _StopwatchCardState();
+}
+
+class _StopwatchCardState extends State<StopwatchCard> {
+  bool isStopwatchGo = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +32,17 @@ class StopwatchCard extends StatelessWidget {
           const SizedBox(height: 30),
           Flexible(
             fit: FlexFit.loose,
-            child: Image.asset('assets/images/stoper_rest.png'),
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                setState(() {
+                  isStopwatchGo = !isStopwatchGo;
+                });
+              },
+              child: Image.asset(
+                isStopwatchGo ? 'assets/images/stoper_rest.png' : 'assets/images/stoper_go.png',
+              ),
+            ),
           ),
           ElevatedButton(
               onPressed: () {},
