@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:meta/meta.dart';
 import 'package:outfit_flutter/services/service_event.dart';
-import 'package:outfit_flutter/utils/total_time_helper.dart';
+import 'package:outfit_flutter/services/stopwatch_service.dart';
 
 part 'stopwatch_event.dart';
 part 'stopwatch_state.dart';
@@ -26,7 +26,7 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
             emit(StopwatchFailState(e.toString()));
           });
       } else if (event is TickStopwatchEvent) {
-        emit(StopwatchRunningState(timeText: _generateTimeString(event.duration)));
+        emit(StopwatchRunningState(timeText: StopwatchService.generateTimeString(event.duration)));
       } else if (event is FinishStopwatchEvent) {
         _flutterBackgroundService.invoke(ServiceEvent.stopService);
         _subscription?.cancel();
@@ -41,16 +41,5 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
     await super.close();
   }
 
-  String _generateTimeString(int duration) {
-    final minutes = (duration / 60).truncate();
-    final hours = (minutes / 60).truncate();
-    final remainingMinutes = minutes % 60;
-    final remainingSeconds = duration % 60;
-
-    final helper = TotalTimeHelper();
-
-    helper.addTotalTime(hours, remainingMinutes, remainingSeconds);
-
-    return helper.getTime();
-  }
+  
 }

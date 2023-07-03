@@ -5,12 +5,11 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:outfit_flutter/services/service_event.dart';
+import 'package:outfit_flutter/utils/total_time_helper.dart';
 
-// this will be used as notification channel id
 const notificationChannelId = 'stopwatch_service';
-
-// this will be used for notification id, So you can update your custom notification with this id.
 const notificationId = 100;
+const notificationTitle = 'Stopwatch Service';
 
 class StopwatchService {
   static int duration = 0;
@@ -18,10 +17,10 @@ class StopwatchService {
     final service = FlutterBackgroundService();
 
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      notificationChannelId, // id
-      'Stopwatch Service', // title
-      description: 'This channel is used for important notifications.', // description
-      importance: Importance.max, // importance must be at low or higher level
+      notificationChannelId,
+      notificationTitle,
+      description: 'This channel is used for katya stoper.',
+      importance: Importance.max,
     );
 
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -32,16 +31,12 @@ class StopwatchService {
 
     await service.configure(
       androidConfiguration: AndroidConfiguration(
-        // this will be executed when app is in foreground or background in separated isolate
         onStart: onStart,
-
-        // auto start service
         autoStart: false,
         isForegroundMode: true,
-
-        notificationChannelId: notificationChannelId, // this must match with notification channel you created above.
-        initialNotificationTitle: 'AWESOME SERVICE',
-        initialNotificationContent: 'Initializing',
+        notificationChannelId: notificationChannelId,
+        initialNotificationTitle: 'Stoper Katya',
+        initialNotificationContent: 'Czeka na inicjalizacje',
         foregroundServiceNotificationId: notificationId,
       ),
       iosConfiguration: IosConfiguration(),
@@ -50,7 +45,6 @@ class StopwatchService {
 
   @pragma('vm:entry-point')
   static Future<void> onStart(ServiceInstance service) async {
-    // Only available for flutter 3.0.0 and later
     DartPluginRegistrant.ensureInitialized();
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     var timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
@@ -59,12 +53,12 @@ class StopwatchService {
         if (await service.isForegroundService()) {
           flutterLocalNotificationsPlugin.show(
             notificationId,
-            'COOL SERVICE',
-            'Awesome ${duration.toString()}',
+            'Stoper Katya',
+            'Twój czas to: ${generateTimeString(duration)}',
             const NotificationDetails(
               android: AndroidNotificationDetails(
                 notificationChannelId,
-                'MY FOREGROUND SERVICE',
+                notificationTitle,
                 icon: 'ic_bg_service_small',
                 ongoing: true,
               ),
@@ -91,7 +85,18 @@ class StopwatchService {
         service.stopSelf();
       });
     }
+  }
 
-    // bring to foreground
+  static String generateTimeString(int duration) {
+    final minutes = (duration / 60).truncate();
+    final hours = (minutes / 60).truncate();
+    final remainingMinutes = minutes % 60;
+    final remainingSeconds = duration % 60;
+
+    final helper = TotalTimeHelper();
+
+    helper.addTotalTime(hours, remainingMinutes, remainingSeconds);
+
+    return helper.getTime();
   }
 }
