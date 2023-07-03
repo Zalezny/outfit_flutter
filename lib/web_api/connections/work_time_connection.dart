@@ -35,7 +35,7 @@ class WorkTimeConnection {
     return response.statusCode;
   }
 
-  Future<int> insertWorkTime(String outfitId, WorkTime workTime, bool isKatya) async {
+  Future<String> insertWorkTime(String outfitId, WorkTime workTime, bool isKatya) async {
     final body = {
       'person': isKatya ? ConstDatabase.katyaNumber : ConstDatabase.momNumber,
       'hour': workTime.hour,
@@ -44,6 +44,12 @@ class WorkTimeConnection {
       'date': workTime.date,
     };
     final Response response = await _apiService.patch(ConstDatabase.outfitUrlById(outfitId), jsonEncode(body));
-    return response.statusCode;
+
+    if (response.statusCode / ~100 == 2) {
+      final bodyList = json.decode(response.body);
+      return bodyList['id'];
+    } else {
+      throw Exception('Issue with connecting');
+    }
   }
 }

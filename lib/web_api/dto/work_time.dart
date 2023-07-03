@@ -30,4 +30,20 @@ class WorkTime {
     data['_id'] = sId;
     return data;
   }
+
+  WorkTime copyWith({
+    int? hour,
+    int?  minute,
+    int? second,
+    String? date,
+    String? sId,
+  }) {
+    return WorkTime(
+      hour: hour ?? this.hour,
+      sId: sId ?? this.sId,
+      second: second ?? this.second,
+      minute: minute ?? this.minute,
+      date: date ?? this.date,
+    );
+  }
 }

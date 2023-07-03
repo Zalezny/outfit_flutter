@@ -3,6 +3,7 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:outfit_flutter/pages/stopwatch_page/widgets/stopwatch_card.dart';
+import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
@@ -17,7 +18,8 @@ class StopwatchPage extends StatefulWidget {
 }
 
 class _StopwatchPageState extends State<StopwatchPage> {
-  final stopwatchBloc = StopwatchBloc(FlutterBackgroundService());
+  late StopwatchBloc _stopwatchBloc;
+  late Bloc<WorkTimeEvent, WorkTimeState> _workTimeBloc;
   final _sharedPref = GetIt.I<SharedPreference>();
   bool? _isKatya;
   String? _userName;
@@ -25,11 +27,18 @@ class _StopwatchPageState extends State<StopwatchPage> {
   @override
   void initState() {
     super.initState();
+
     _getkatyaInfo();
   }
 
   Future<void> _getkatyaInfo() async {
     _isKatya = await _sharedPref.getIsKatya();
+    if (_isKatya != null) {
+      _isKatya!
+          ? _workTimeBloc = BlocProvider.of<KatyaWorkTimeBloc>(context)
+          : _workTimeBloc = BlocProvider.of<MomWorkTimeBloc>(context);
+      _stopwatchBloc = StopwatchBloc(FlutterBackgroundService(), _workTimeBloc);
+    }
     _userName = await _sharedPref.getUserName();
     setState(() {});
   }
@@ -37,6 +46,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
+
     return _isKatya == null
         ? const SizedBox()
         : Container(
@@ -58,7 +68,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     ),
                   ),
                   BlocProvider(
-                    create: (_) => stopwatchBloc..add(CheckStopwatchEvent()),
+                    create: (_) => _stopwatchBloc..add(CheckStopwatchEvent()),
                     child: BlocBuilder<StopwatchBloc, StopwatchState>(builder: ((context, state) {
                       if (state is StopwatchRunningState) {
                         return StopwatchCard(

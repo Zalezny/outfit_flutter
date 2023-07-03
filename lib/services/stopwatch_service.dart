@@ -4,8 +4,10 @@ import 'dart:ui';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:outfit_flutter/services/service_event.dart';
 import 'package:outfit_flutter/utils/total_time_helper.dart';
+import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
 const notificationChannelId = 'stopwatch_service';
 const notificationId = 100;
@@ -98,5 +100,20 @@ class StopwatchService {
     helper.addTotalTime(hours, remainingMinutes, remainingSeconds);
 
     return helper.getTime();
+  }
+
+  static WorkTime generateWorkTime(int duration) {
+    final minutes = (duration / 60).truncate();
+    final hours = (minutes / 60).truncate();
+    final remainingMinutes = minutes % 60;
+    final remainingSeconds = duration % 60;
+    final now = DateTime.now();
+    final formattedDateTime = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(now);
+    return WorkTime(
+      hour: hours,
+      minute: remainingMinutes,
+      second: remainingSeconds,
+      date: formattedDateTime,
+    );
   }
 }
