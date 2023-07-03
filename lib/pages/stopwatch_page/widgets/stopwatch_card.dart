@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:outfit_flutter/pages/stopwatch_page/bloc/stopwatch_bloc.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
 
-class StopwatchCard extends StatefulWidget {
-  const StopwatchCard({super.key});
-
-  @override
-  State<StopwatchCard> createState() => _StopwatchCardState();
-}
-
-class _StopwatchCardState extends State<StopwatchCard> {
-  bool isStopwatchGo = false;
+class StopwatchCard extends StatelessWidget {
+  final String topText;
+  final bool isStopwatchGo;
+  const StopwatchCard({
+    super.key,
+    required this.topText,
+    required this.isStopwatchGo,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class _StopwatchCardState extends State<StopwatchCard> {
         color: Theme.of(context).primaryColorLight.withOpacity(0.1),
         child: Column(children: [
           Text(
-            "Dotknij, by uruchomić \nstoper",
+            topText,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: AppColors.red_1867,
@@ -35,12 +36,11 @@ class _StopwatchCardState extends State<StopwatchCard> {
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
-                setState(() {
-                  isStopwatchGo = !isStopwatchGo;
-                });
+                BlocProvider.of<StopwatchBloc>(context)
+                    .add(isStopwatchGo ? FinishStopwatchEvent() : StartStopwatchEvent());
               },
               child: Image.asset(
-                isStopwatchGo ? 'assets/images/stoper_rest.png' : 'assets/images/stoper_go.png',
+                isStopwatchGo ? 'assets/images/stoper_go.png' : 'assets/images/stoper_rest.png',
               ),
             ),
           ),

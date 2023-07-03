@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:outfit_flutter/pages/stopwatch_page/widgets/stopwatch_card.dart';
 import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
+
+import 'bloc/stopwatch_bloc.dart';
 
 class StopwatchPage extends StatefulWidget {
   final OutfitDto outfit;
@@ -14,8 +17,8 @@ class StopwatchPage extends StatefulWidget {
 }
 
 class _StopwatchPageState extends State<StopwatchPage> {
+  final stopwatchBloc = StopwatchBloc(FlutterBackgroundService());
   final _sharedPref = GetIt.I<SharedPreference>();
-  final _flutterBackgroundService = FlutterBackgroundService();
   bool? _isKatya;
   String? _userName;
 
@@ -54,7 +57,23 @@ class _StopwatchPageState extends State<StopwatchPage> {
                       ),
                     ),
                   ),
-                   StopwatchCard(),
+                  BlocProvider(
+                    create: (_) => stopwatchBloc,
+                    child: BlocBuilder<StopwatchBloc, StopwatchState>(builder: ((context, state) {
+                      if (state is StopwatchRunningState) {
+                        return StopwatchCard(
+                          topText: '${state.timeText}\nCzas trwania',
+                          isStopwatchGo: true,
+                        );
+                      } else if (state is StopwatchFailState) {
+                        //todo flutter toast about fail
+                      }
+                      return const StopwatchCard(
+                        topText: "Dotknij, by uruchomić \nstoper",
+                        isStopwatchGo: false,
+                      );
+                    })),
+                  ),
                   Container(
                     margin: const EdgeInsets.all(8.0),
                     height: mediaQuery.height * .18,

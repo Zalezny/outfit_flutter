@@ -7,8 +7,8 @@ import 'di/injectable.dart';
 void main() async {
   initializeDateFormatting('pl_PL');
   WidgetsFlutterBinding.ensureInitialized();
-  await StopwatchService.initializeService();
   configureDependencies();
+  await StopwatchService.initializeService();
   runApp(const App());
 }
 
