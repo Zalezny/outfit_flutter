@@ -31,7 +31,11 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
         _flutterBackgroundService.invoke(ServiceEvent.stopService);
         _subscription?.cancel();
         emit(StopwatchInitial());
-      }
+      } else if (event is CheckStopwatchEvent) {
+        if(await _flutterBackgroundService.isRunning()) {
+          add(StartStopwatchEvent());
+        }
+       }
     });
   }
 

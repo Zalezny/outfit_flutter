@@ -58,7 +58,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     ),
                   ),
                   BlocProvider(
-                    create: (_) => stopwatchBloc,
+                    create: (_) => stopwatchBloc..add(CheckStopwatchEvent()),
                     child: BlocBuilder<StopwatchBloc, StopwatchState>(builder: ((context, state) {
                       if (state is StopwatchRunningState) {
                         return StopwatchCard(

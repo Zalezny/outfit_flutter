@@ -15,7 +15,7 @@ class StopwatchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      fit: FlexFit.loose,
+      fit: FlexFit.tight,
       child: Container(
         margin: const EdgeInsets.all(8.0),
         padding: const EdgeInsets.all(28.0),
