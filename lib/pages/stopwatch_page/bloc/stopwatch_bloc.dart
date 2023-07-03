@@ -32,10 +32,15 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
         _subscription?.cancel();
         emit(StopwatchInitial());
       } else if (event is CheckStopwatchEvent) {
-        if(await _flutterBackgroundService.isRunning()) {
-          add(StartStopwatchEvent());
+        if (await _flutterBackgroundService.isRunning()) {
+          _subscription = FlutterBackgroundService().on(ServiceEvent.update).listen((body) {
+            if (body != null) add(TickStopwatchEvent(int.parse(body['seconds'])));
+          })
+            ..onError((e) {
+              emit(StopwatchFailState(e.toString()));
+            });
         }
-       }
+      }
     });
   }
 
@@ -44,6 +49,4 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
     await _subscription?.cancel();
     await super.close();
   }
-
-  
 }
