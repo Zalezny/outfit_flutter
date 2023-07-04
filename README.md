@@ -15,6 +15,8 @@ Na chwilę obecną zastosowano takie biblioteki jak:
   - flutter_background_service - obsługa serwisu background oraz foreground dla stopera
   - flutter_background_service_android - obsługa serwisu dla androida
   - flutter_local_notifications - obsługa lokalnych notyfikacji
+  - freezed - obsługa autogeneracji plików dto
+  - build_runner - obsługa build'u dla freezed oraz injectable
 
 W projekcie istnieją na chwilę obecną dwie klasy bloc: 
 - OutfitBloc - zarządzanie listą strojów oraz obsługa usuwania, dodawania, zczytywania z API itp. 
