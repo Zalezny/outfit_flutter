@@ -20,28 +20,52 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(
-        title,
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
-      content: Text(
-        description,
-        style: Theme.of(context).textTheme.bodyMedium,
-      ),
-      actions: [
-        TextButton(
-          onPressed: onSecondaryButton ??
-              () {
-                Navigator.of(context).pop();
-              },
-          child: Text(secondaryButtonText),
+    return Dialog(
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.2,
+        padding: const EdgeInsets.only(
+          top: 24,
+          left: 24,
+          right: 8,
+          bottom: 4,
         ),
-        TextButton(
-          onPressed: onPrimaryButton,
-          child: Text(primaryButtonText),
-        )
-      ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.titleMedium,
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              description,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            Expanded(
+              child: Container(
+                alignment: Alignment.bottomRight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: onSecondaryButton ??
+                          () {
+                            Navigator.of(context).pop();
+                          },
+                      child: Text(secondaryButtonText),
+                    ),
+                    TextButton(
+                      onPressed: onPrimaryButton,
+                      child: Text(primaryButtonText),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
