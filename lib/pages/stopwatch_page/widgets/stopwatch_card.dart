@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:outfit_flutter/custom_widgets/custom_dialog.dart';
 import 'package:outfit_flutter/pages/stopwatch_page/bloc/stopwatch_bloc.dart';
+import 'package:outfit_flutter/pages/stopwatch_page/widgets/stopwatch_bottom_sheet.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
 
 class StopwatchCard extends StatelessWidget {
   final String topText;
   final bool isStopwatchGo;
   final String outfitName;
-  const StopwatchCard({
-    super.key,
-    required this.topText,
-    required this.isStopwatchGo,
-    required this.outfitName,
-  });
+  final VoidCallback onHandAdded;
+  const StopwatchCard(
+      {super.key,
+      required this.topText,
+      required this.isStopwatchGo,
+      required this.outfitName,
+      required this.onHandAdded});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,7 @@ class StopwatchCard extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-              onPressed: () {},
+              onPressed: onHandAdded,
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                 child: Text(

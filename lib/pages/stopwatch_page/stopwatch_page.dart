@@ -8,6 +8,7 @@ import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
 import 'bloc/stopwatch_bloc.dart';
+import 'widgets/stopwatch_bottom_sheet.dart';
 
 class StopwatchPage extends StatefulWidget {
   final OutfitDto outfit;
@@ -72,6 +73,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     child: BlocBuilder<StopwatchBloc, StopwatchState>(builder: ((context, state) {
                       if (state is StopwatchRunningState) {
                         return StopwatchCard(
+                          onHandAdded: _onHandAdded,
                           outfitName: widget.outfit.title,
                           topText: '${state.timeText}\nCzas trwania',
                           isStopwatchGo: true,
@@ -80,6 +82,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                         //todo flutter toast about fail
                       }
                       return StopwatchCard(
+                        onHandAdded: _onHandAdded,
                         outfitName: widget.outfit.title,
                         topText: "Dotknij, by uruchomić \nstoper",
                         isStopwatchGo: false,
@@ -115,5 +118,12 @@ class _StopwatchPageState extends State<StopwatchPage> {
               ),
             ),
           );
+  }
+
+  void _onHandAdded() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => const StopwatchBottomSheet(),
+    );
   }
 }
