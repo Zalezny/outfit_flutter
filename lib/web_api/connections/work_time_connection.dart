@@ -17,9 +17,9 @@ class WorkTimeConnection {
   Future<List<WorkTime>> getWorkTimes(String id, bool isKatyaListNeed) async {
     try {
       final outfits = await _outfitConnection.getOutfits();
-      for (var outfit in outfits.outfits!) {
+      for (var outfit in outfits) {
         if (outfit.sId == id) {
-          return isKatyaListNeed ? outfit.kateHours! : outfit.momHours!;
+          return isKatyaListNeed ? outfit.kateHours : outfit.momHours;
         }
       }
     } catch (e) {

@@ -53,7 +53,7 @@ class _OutfitPageState extends State<OutfitPage> {
                 border: OutlineInputBorder(),
               ),
               onFieldSubmitted: (outfitName) {
-                _bloc.add(AddOutfitEvent(OutfitDto(title: outfitName)));
+                _bloc.add(AddOutfitEvent(outfitName));
                 Navigator.of(context).pop();
               },
             ),

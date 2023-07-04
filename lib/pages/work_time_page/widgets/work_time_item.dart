@@ -43,12 +43,12 @@ class _WorkTimeItemState extends State<WorkTimeItem> {
       direction: widget.isKatyaPage == isKatya ? DismissDirection.endToStart : DismissDirection.none,
       onDismissed: (direction) {
         if (direction == DismissDirection.endToStart) {
-          bloc.add(DeleteLocallyWorkTimeEvent(widget.workTime.sId!));
+          bloc.add(DeleteLocallyWorkTimeEvent(widget.workTime.sId));
           showDialog(
             context: context,
             builder: (context) => CustomDialog(
               onPrimaryButton: () {
-                bloc.add(DeleteWorkTimeEvent(widget.workTime.sId!));
+                bloc.add(DeleteWorkTimeEvent(widget.workTime.sId));
                 Navigator.of(context).pop();
               },
               onSecondaryButton: () {
@@ -71,7 +71,7 @@ class _WorkTimeItemState extends State<WorkTimeItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  _formatJsonDate(widget.workTime.date!),
+                  _formatJsonDate(widget.workTime.date),
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 Text(
@@ -104,8 +104,8 @@ class _WorkTimeItemState extends State<WorkTimeItem> {
   }
 
   String _generateTimeText(WorkTime wt) {
-    final String mString = (wt.minute! < 10) ? "0${wt.minute}" : "${wt.minute}";
-    final String sString = (wt.second! < 10) ? "0${wt.second}" : "${wt.second}";
+    final String mString = (wt.minute< 10) ? "0${wt.minute}" : "${wt.minute}";
+    final String sString = (wt.second< 10) ? "0${wt.second}" : "${wt.second}";
     return "${wt.hour}:$mString:$sString";
   }
 }

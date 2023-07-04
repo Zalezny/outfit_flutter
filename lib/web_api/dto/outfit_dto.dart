@@ -1,84 +1,23 @@
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
-class OutfitDto {
-  String? sId;
-  String? title;
-  String? hour;
-  String? date;
-  List<WorkTime>? momHours;
-  List<WorkTime>? kateHours;
-  int? iV;
-  bool? ended;
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
-  OutfitDto(
-      {this.sId,
-      this.title,
-      this.hour,
-      this.date,
-      this.momHours,
-      this.kateHours,
-      this.iV,
-      this.ended});
+part 'outfit_dto.freezed.dart';
+part 'outfit_dto.g.dart';
 
-  OutfitDto.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    title = json['title'];
-    hour = json['hour'];
-    date = json['date'];
-    if (json['momHours'] != null) {
-      momHours = <WorkTime>[];
-      json['momHours'].forEach((v) {
-        momHours!.add(WorkTime.fromJson(v));
-      });
-    }
-    if (json['kateHours'] != null) {
-      kateHours = <WorkTime>[];
-      json['kateHours'].forEach((v) {
-        kateHours!.add(WorkTime.fromJson(v));
-      });
-    }
-    iV = json['__v'];
-    ended = json['ended'];
-  }
+@freezed
+class OutfitDto with _$OutfitDto {
+  const factory OutfitDto({
+    @JsonKey(name: '_id') required String sId,
+    required String title,
+    required String hour,
+    required String date,
+    required List<WorkTime> momHours,
+    required List<WorkTime> kateHours,
+    @JsonKey(name: '__v') required int iV,
+    required bool ended,
+  }) = _OutfitDto;
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['title'] = title;
-    data['hour'] = hour;
-    data['date'] = date;
-    if (momHours != null) {
-      data['momHours'] = momHours!.map((v) => v.toJson()).toList();
-    }
-    if (kateHours != null) {
-      data['kateHours'] = kateHours!.map((v) => v.toJson()).toList();
-    }
-    data['__v'] = iV;
-    data['ended'] = ended;
-    return data;
-  }
-
-  OutfitDto copyWith({
-    String? sId,
-  String? title,
-  String? hour,
-  String? date,
-  List<WorkTime>? momHours,
-  List<WorkTime>? kateHours,
-  int? iV,
-  bool? ended,
-  }) {
-    return OutfitDto(
-      sId: sId ?? this.sId,
-      title: title ?? this.title,
-      hour: hour ?? this.hour,
-      date: date ?? this.date,
-      momHours: momHours ?? this.momHours,
-      kateHours: kateHours ?? this.kateHours,
-      iV: iV ?? this.iV,
-      ended: ended ?? this.ended
-    );
-  }
+  factory OutfitDto.fromJson(Map<String, Object?> json) => _$OutfitDtoFromJson(json);
 }
-
-

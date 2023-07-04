@@ -13,7 +13,7 @@ class OutfitItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: outfit.ended! ? 0.4 : 1.0,
+      opacity: outfit.ended? 0.4 : 1.0,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
@@ -29,7 +29,7 @@ class OutfitItem extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Text(
-                    outfit.title!,
+                    outfit.title,
                     style: Theme.of(context).textTheme.titleLarge,
                     textAlign: TextAlign.center,
                   )),
@@ -45,7 +45,7 @@ class OutfitItem extends StatelessWidget {
                             builder: (ctx) {
                               return CustomDialog(
                                   onPrimaryButton: () {
-                                    onRemoveItem(outfit.sId!);
+                                    onRemoveItem(outfit.sId);
                                     Navigator.of(context).pop();
                                   },
                                   onSecondaryButton: null,

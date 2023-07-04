@@ -11,8 +11,8 @@ class DeleteOutfitEvent extends OutfitEvent {
 }
 
 class AddOutfitEvent extends OutfitEvent {
-  final OutfitDto outfit;
-  AddOutfitEvent(this.outfit);
+  final String outfitTitle;
+  AddOutfitEvent(this.outfitTitle);
 }
 
 class ChangeEndedOutfitEvent extends OutfitEvent {

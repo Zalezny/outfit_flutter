@@ -55,7 +55,7 @@ class _WorkTimeBuilderState extends State<WorkTimeBuilder> {
                     itemCount: state.model.length,
                     itemBuilder: (context, index) {
                       return WorkTimeItem(
-                        key: ValueKey(state.model[index].sId!),
+                        key: ValueKey(state.model[index].sId),
                         workTime: state.model[index],
                         index: index,
                         isKatyaPage: widget.isKatyaPage,
@@ -93,7 +93,7 @@ class _WorkTimeBuilderState extends State<WorkTimeBuilder> {
   String _totalTimes(List<WorkTime> workTimes) {
     final helper = TotalTimeHelper();
     for (WorkTime work in workTimes) {
-      helper.addTotalTime(work.hour!, work.minute!, work.second!);
+      helper.addTotalTime(work.hour, work.minute, work.second);
     }
 
     return helper.getTime();

@@ -17,16 +17,16 @@ class OutfitBloc extends Bloc<OutfitEvent, OutfitState> {
       if (event is InitOutfitEvent) {
         emit(OutfitLoadingState());
         try {
-          outfits = (await _outfitConnection.getOutfits()).outfits!.reversed.toList();
+          outfits = (await _outfitConnection.getOutfits()).reversed.toList();
           emit(OutfitSuccessState(outfits));
         } catch (e) {
           emit(OutfitFailState(e.toString()));
         }
       } else if (event is AddOutfitEvent) {
         try {
-          _outfitConnection.postOutfit(event.outfit.title!);
+          _outfitConnection.postOutfit(event.outfitTitle);
           //TODO: When GraphQL is create, it will be change
-          outfits = (await _outfitConnection.getOutfits()).outfits!.reversed.toList();
+          outfits = (await _outfitConnection.getOutfits()).reversed.toList();
           // outfits.add(event.outfit);
           emit(OutfitSuccessState(outfits));
         } catch (e) {

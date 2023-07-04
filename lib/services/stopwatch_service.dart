@@ -113,6 +113,7 @@ class StopwatchService {
     final now = DateTime.now();
     final formattedDateTime = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(now);
     return WorkTime(
+      sId: '',
       hour: hours,
       minute: remainingMinutes,
       second: remainingSeconds,

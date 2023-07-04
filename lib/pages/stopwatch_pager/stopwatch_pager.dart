@@ -18,7 +18,7 @@ class StopwatchPager extends StatelessWidget {
 
   void endedCallback(BuildContext context) {
     final outfitBloc = GetIt.I<OutfitBloc>();
-    outfitBloc.add(ChangeEndedOutfitEvent(outfit.sId!, !outfit.ended!));
+    outfitBloc.add(ChangeEndedOutfitEvent(outfit.sId, !outfit.ended));
     Navigator.of(context).pop();
   }
 
@@ -30,14 +30,14 @@ class StopwatchPager extends StatelessWidget {
         body: Column(
           children: [
             StopwatchTopRow(
-              title: outfit.title!,
+              title: outfit.title,
               onEndedClick: endedCallback,
             ),
             Expanded(
               child: MultiBlocProvider(
                 providers: [
-                  BlocProvider<MomWorkTimeBloc>(create: ((_) => WorkTimeBloc(GetIt.I<WorkTimeConnection>(), false, outfit.sId!))),
-                  BlocProvider<KatyaWorkTimeBloc>(create: ((_) => WorkTimeBloc(GetIt.I<WorkTimeConnection>(), true, outfit.sId!))),
+                  BlocProvider<MomWorkTimeBloc>(create: ((_) => WorkTimeBloc(GetIt.I<WorkTimeConnection>(), false, outfit.sId))),
+                  BlocProvider<KatyaWorkTimeBloc>(create: ((_) => WorkTimeBloc(GetIt.I<WorkTimeConnection>(), true, outfit.sId))),
                 ],
                 child: NestedPageView(
                   wantKeepAlive: true,
@@ -47,7 +47,7 @@ class StopwatchPager extends StatelessWidget {
                   children: [
                     StopwatchPage(outfit: outfit),
                     WorkTimePage(
-                      outfitId: outfit.sId!,
+                      outfitId: outfit.sId,
                     ),
                   ],
                 ),
