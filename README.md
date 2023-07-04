@@ -26,8 +26,9 @@ Do obsługi zapytań REST APi używany jest podział na foldery connections, dto
 ## TODO
 
 - Implementacja próśb o permisje
-- Implementacja stopera
 - Implementacja ikony aplikacji
+- Implementacja dialogów
+- Wprowadzenie ręczne godzin
 
 ## Zdjęcia z postępów
 
