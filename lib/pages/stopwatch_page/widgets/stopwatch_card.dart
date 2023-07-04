@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:outfit_flutter/custom_widgets/custom_dialog.dart';
 import 'package:outfit_flutter/pages/stopwatch_page/bloc/stopwatch_bloc.dart';
-import 'package:outfit_flutter/pages/stopwatch_page/widgets/stopwatch_bottom_sheet.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
 
 class StopwatchCard extends StatelessWidget {

@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_picker/picker.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
+import 'package:outfit_flutter/utils/shared_preference.dart';
+import 'package:outfit_flutter/utils/time_utils.dart';
+import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
 class StopwatchBottomSheet extends StatefulWidget {
   const StopwatchBottomSheet({super.key});
@@ -11,7 +18,8 @@ class StopwatchBottomSheet extends StatefulWidget {
 }
 
 class _StopwatchBottomSheetState extends State<StopwatchBottomSheet> {
-  DateTime? _dateTime;
+  final SharedPreference sharedPref = GetIt.I<SharedPreference>();
+  DateTime _dateTime = DateTime.now();
   Time? _workTime;
   late TextEditingController _dateTextFormController;
   late TextEditingController _timeTextFormController;
@@ -20,7 +28,7 @@ class _StopwatchBottomSheetState extends State<StopwatchBottomSheet> {
   void initState() {
     super.initState();
     _dateTextFormController = TextEditingController(text: _stringifyDateTime(_dateTime));
-    _timeTextFormController = TextEditingController(text: '00:00:00');
+    _timeTextFormController = TextEditingController(text: TimeUtils.stringifyTime(_workTime));
   }
 
   @override
@@ -59,16 +67,33 @@ class _StopwatchBottomSheetState extends State<StopwatchBottomSheet> {
                     borderSide: BorderSide(color: AppColors.red_1867), // Kolor ramki, gdy pole jest wyłączone
                   ),
                   border: const OutlineInputBorder()),
-              onTap: () {},
+              onTap: () => _selectWorkTime(context),
             ),
             ElevatedButton(
-              onPressed: () {},
-              child: Text('Zapisz do bazy'),
+              onPressed: onSaveData,
+              child: const Text('Zapisz do bazy'),
             )
           ],
         ),
       ),
     );
+  }
+
+  void onSaveData() async {
+    final bool isKatya = await sharedPref.getIsKatya() ?? false;
+    if (_workTime != null) {
+      if (_workTime!.hour != 0 || _workTime!.minute != 0 || _workTime!.second != 0) {
+        final objWorkTime = WorkTime(
+          sId: '',
+          hour: _workTime!.hour,
+          minute: _workTime!.minute,
+          second: _workTime!.second,
+          date: DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dateTime),
+        );
+        final bloc = isKatya ? BlocProvider.of<KatyaWorkTimeBloc>(context) : BlocProvider.of<MomWorkTimeBloc>(context);
+        bloc.add(AddWorkTimeEvent(objWorkTime));
+      }
+    }
   }
 
   void _selectDateTime(BuildContext context) async {
@@ -87,6 +112,7 @@ class _StopwatchBottomSheetState extends State<StopwatchBottomSheet> {
         final dateTime = pickedDate.add(Duration(hours: pickedTime.hour, minutes: pickedTime.minute));
         _dateTime = dateTime;
         _dateTextFormController.text = _stringifyDateTime(_dateTime);
+
         setState(() {});
       }
     }
@@ -97,6 +123,19 @@ class _StopwatchBottomSheetState extends State<StopwatchBottomSheet> {
   }
 
   void _selectWorkTime(BuildContext context) {
-
+    Picker(
+        adapter: NumberPickerAdapter(
+          data: [
+            const NumberPickerColumn(begin: 0, end: 59),
+            const NumberPickerColumn(begin: 0, end: 59),
+            const NumberPickerColumn(begin: 0, end: 59),
+          ],
+        ),
+        hideHeader: true,
+        title: const Text("Wybierz czas trwania"),
+        onConfirm: (Picker picker, List<int> value) {
+          _workTime = Time(value[0], value[1], value[2]);
+          _timeTextFormController.text = TimeUtils.stringifyTime(_workTime);
+        }).showDialog(context);
   }
 }

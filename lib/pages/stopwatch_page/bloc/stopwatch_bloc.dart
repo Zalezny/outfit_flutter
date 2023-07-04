@@ -5,7 +5,7 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:meta/meta.dart';
 import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/services/service_event.dart';
-import 'package:outfit_flutter/services/stopwatch_service.dart';
+import 'package:outfit_flutter/utils/time_utils.dart';
 
 part 'stopwatch_event.dart';
 part 'stopwatch_state.dart';
@@ -30,12 +30,12 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
           });
       } else if (event is TickStopwatchEvent) {
         _duration = event.duration;
-        emit(StopwatchRunningState(timeText: StopwatchService.generateTimeString(_duration)));
+        emit(StopwatchRunningState(timeText: TimeUtils.stringifyTimeByInt(_duration)));
       } else if (event is FinishStopwatchEvent) {
         try {
           _flutterBackgroundService.invoke(ServiceEvent.stopService);
           _subscription?.cancel();
-          _workTimeBloc.add(AddWorkTimeEvent(StopwatchService.generateWorkTime(_duration)));
+          _workTimeBloc.add(AddWorkTimeEvent(TimeUtils.generateWorkTime(_duration)));
           emit(StopwatchInitial());
         } catch (e) {
           emit(StopwatchFailState(e.toString()));
