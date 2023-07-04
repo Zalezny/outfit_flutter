@@ -30,10 +30,12 @@ class _WorkTimeItemState extends State<WorkTimeItem> {
   void initState() {
     super.initState();
     bloc = widget.isKatyaPage ? BlocProvider.of<KatyaWorkTimeBloc>(context) : BlocProvider.of<MomWorkTimeBloc>(context);
-    sharedPref.getIsKatya().then((v) {
-      isKatya = v;
-      setState(() {});
-    });
+    getKatya();
+  }
+
+  void getKatya() async {
+    isKatya = await sharedPref.getIsKatya();
+    if (mounted) setState(() {});
   }
 
   @override
@@ -104,8 +106,8 @@ class _WorkTimeItemState extends State<WorkTimeItem> {
   }
 
   String _generateTimeText(WorkTime wt) {
-    final String mString = (wt.minute< 10) ? "0${wt.minute}" : "${wt.minute}";
-    final String sString = (wt.second< 10) ? "0${wt.second}" : "${wt.second}";
+    final String mString = (wt.minute < 10) ? "0${wt.minute}" : "${wt.minute}";
+    final String sString = (wt.second < 10) ? "0${wt.second}" : "${wt.second}";
     return "${wt.hour}:$mString:$sString";
   }
 }

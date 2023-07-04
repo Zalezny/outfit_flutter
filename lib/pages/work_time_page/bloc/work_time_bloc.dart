@@ -20,22 +20,19 @@ class WorkTimeBloc extends Bloc<WorkTimeEvent, WorkTimeState> with KatyaWorkTime
         if (event is InitWorkTimeEvent) {
           emit(WorkTimeLoadingState());
           _workTimes = (await _workTimeConnection.getWorkTimes(_outfitId, _isKatyaLists)).reversed.toList();
-          emit(WorkTimeSuccessState(_workTimes));
         } else if (event is DeleteWorkTimeEvent) {
           await _workTimeConnection.deleteWorkTime(_outfitId, event.workTimeId, _isKatyaLists);
           _workTimes.removeWhere((element) => element.sId == event.workTimeId);
-          emit(WorkTimeSuccessState(_workTimes));
         } else if (event is AddWorkTimeEvent) {
           final idWorkTime = await _workTimeConnection.insertWorkTime(_outfitId, event.workTime, _isKatyaLists);
-          _workTimes.add(event.workTime.copyWith(sId: idWorkTime));
-          emit(WorkTimeSuccessState(_workTimes));
+          final workTime = event.workTime.copyWith(sId: idWorkTime);
+          _workTimes.insert(0, workTime);
         } else if (event is InsertLocallyWorkTimeEvent) {
           _workTimes.insert(event.index, event.workTime);
-          emit(WorkTimeSuccessState(_workTimes));
         } else if (event is DeleteLocallyWorkTimeEvent) {
           _workTimes.removeWhere((element) => element.sId == event.workTimeId);
-          emit(WorkTimeSuccessState(_workTimes));
         }
+        emit(WorkTimeSuccessState(_workTimes));
       } catch (e) {
         emit(WorkTimeFailState(e.toString()));
       }

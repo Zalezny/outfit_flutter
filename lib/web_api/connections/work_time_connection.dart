@@ -44,8 +44,7 @@ class WorkTimeConnection {
       'date': workTime.date,
     };
     final Response response = await _apiService.patch(ConstDatabase.outfitUrlById(outfitId), jsonEncode(body));
-
-    if (response.statusCode / ~100 == 2) {
+    if (response.statusCode ~/ 100 == 2) {
       final bodyList = json.decode(response.body);
       return bodyList['id'];
     } else {

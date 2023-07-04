@@ -72,13 +72,15 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     child: BlocBuilder<StopwatchBloc, StopwatchState>(builder: ((context, state) {
                       if (state is StopwatchRunningState) {
                         return StopwatchCard(
+                          outfitName: widget.outfit.title,
                           topText: '${state.timeText}\nCzas trwania',
                           isStopwatchGo: true,
                         );
                       } else if (state is StopwatchFailState) {
                         //todo flutter toast about fail
                       }
-                      return const StopwatchCard(
+                      return StopwatchCard(
+                        outfitName: widget.outfit.title,
                         topText: "Dotknij, by uruchomić \nstoper",
                         isStopwatchGo: false,
                       );
