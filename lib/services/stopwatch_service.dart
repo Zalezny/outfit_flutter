@@ -6,6 +6,7 @@ import 'package:flutter_background_service_android/flutter_background_service_an
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:outfit_flutter/services/service_event.dart';
+import 'package:outfit_flutter/theme/app_colors.dart';
 import 'package:outfit_flutter/utils/total_time_helper.dart';
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
@@ -61,7 +62,9 @@ class StopwatchService {
               android: AndroidNotificationDetails(
                 notificationChannelId,
                 notificationTitle,
-                icon: 'ic_bg_service_small',
+                icon: 'katya_logo',
+                colorized: true,
+                color: AppColors.red_1867,
                 ongoing: true,
               ),
             ),
