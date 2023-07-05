@@ -29,20 +29,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
   @override
   void initState() {
     super.initState();
-
     _getkatyaInfo();
-  }
-
-  Future<void> _getkatyaInfo() async {
-    _isKatya = await _sharedPref.getIsKatya();
-    if (_isKatya != null) {
-      _isKatya!
-          ? _workTimeBloc = BlocProvider.of<KatyaWorkTimeBloc>(context)
-          : _workTimeBloc = BlocProvider.of<MomWorkTimeBloc>(context);
-      _stopwatchBloc = StopwatchBloc(FlutterBackgroundService(), _workTimeBloc);
-    }
-    _userName = await _sharedPref.getUserName();
-    setState(() {});
   }
 
   @override
@@ -121,18 +108,35 @@ class _StopwatchPageState extends State<StopwatchPage> {
           );
   }
 
+  Future<void> _getkatyaInfo() async {
+    _isKatya = await _sharedPref.getIsKatya();
+    _getBlocs();
+    _userName = await _sharedPref.getUserName();
+    setState(() {});
+  }
+
+  void _getBlocs() {
+    if (_isKatya != null) {
+      _isKatya!
+          ? _workTimeBloc = BlocProvider.of<KatyaWorkTimeBloc>(context)
+          : _workTimeBloc = BlocProvider.of<MomWorkTimeBloc>(context);
+      _stopwatchBloc = StopwatchBloc(FlutterBackgroundService(), _workTimeBloc);
+    }
+  }
+
   void _onHandAdded() {
     showModalBottomSheet(
       context: context,
-      builder: (context) => StopwatchBottomSheet(onSavePressed: _onSavePressed,),
+      builder: (context) => StopwatchBottomSheet(
+        onSavePressed: _onSavePressed,
+      ),
     );
   }
 
   void _onSavePressed(WorkTime workTime) {
-    if(_isKatya != null) {
+    if (_isKatya != null) {
       final bloc = _isKatya! ? BlocProvider.of<KatyaWorkTimeBloc>(context) : BlocProvider.of<MomWorkTimeBloc>(context);
-        bloc.add(AddWorkTimeEvent(workTime));
+      bloc.add(AddWorkTimeEvent(workTime));
     }
-    
   }
 }

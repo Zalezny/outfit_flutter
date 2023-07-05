@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_picker/picker.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
-import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/utils/time_utils.dart';
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
@@ -17,7 +15,6 @@ class StopwatchBottomSheet extends StatefulWidget {
 }
 
 class _StopwatchBottomSheetState extends State<StopwatchBottomSheet> {
-  final SharedPreference sharedPref = GetIt.I<SharedPreference>();
   DateTime _dateTime = DateTime.now();
   Time? _workTime;
   late TextEditingController _dateTextFormController;
