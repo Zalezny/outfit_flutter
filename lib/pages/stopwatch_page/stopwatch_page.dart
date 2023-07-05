@@ -6,6 +6,7 @@ import 'package:outfit_flutter/pages/stopwatch_page/widgets/stopwatch_card.dart'
 import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
+import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
 import 'bloc/stopwatch_bloc.dart';
 import 'widgets/stopwatch_bottom_sheet.dart';
@@ -123,7 +124,15 @@ class _StopwatchPageState extends State<StopwatchPage> {
   void _onHandAdded() {
     showModalBottomSheet(
       context: context,
-      builder: (context) => const StopwatchBottomSheet(),
+      builder: (context) => StopwatchBottomSheet(onSavePressed: _onSavePressed,),
     );
+  }
+
+  void _onSavePressed(WorkTime workTime) {
+    if(_isKatya != null) {
+      final bloc = _isKatya! ? BlocProvider.of<KatyaWorkTimeBloc>(context) : BlocProvider.of<MomWorkTimeBloc>(context);
+        bloc.add(AddWorkTimeEvent(workTime));
+    }
+    
   }
 }

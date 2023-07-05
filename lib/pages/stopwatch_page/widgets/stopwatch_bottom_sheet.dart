@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_picker/picker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
 import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/utils/time_utils.dart';
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
 class StopwatchBottomSheet extends StatefulWidget {
-  const StopwatchBottomSheet({super.key});
+  final Function(WorkTime) onSavePressed;
+  const StopwatchBottomSheet({super.key, required this.onSavePressed});
 
   @override
   State<StopwatchBottomSheet> createState() => _StopwatchBottomSheetState();
@@ -80,7 +79,6 @@ class _StopwatchBottomSheetState extends State<StopwatchBottomSheet> {
   }
 
   void onSaveData() async {
-    final bool isKatya = await sharedPref.getIsKatya() ?? false;
     if (_workTime != null) {
       if (_workTime!.hour != 0 || _workTime!.minute != 0 || _workTime!.second != 0) {
         final objWorkTime = WorkTime(
@@ -90,8 +88,8 @@ class _StopwatchBottomSheetState extends State<StopwatchBottomSheet> {
           second: _workTime!.second,
           date: DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dateTime),
         );
-        final bloc = isKatya ? BlocProvider.of<KatyaWorkTimeBloc>(context) : BlocProvider.of<MomWorkTimeBloc>(context);
-        bloc.add(AddWorkTimeEvent(objWorkTime));
+        widget.onSavePressed(objWorkTime);
+        Navigator.of(context).pop();
       }
     }
   }
