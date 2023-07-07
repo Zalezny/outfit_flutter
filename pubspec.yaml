@@ -44,12 +44,12 @@ dependencies:
   nested_scroll_views: ^0.0.7
   flutter_background_service: ^3.0.1
   flutter_background_service_android: ^4.0.1
-  flutter_local_notifications: ^14.1.1
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.1
   flutter_picker: ^2.1.0
   fluttertoast: ^8.2.2
   pin_code_fields: ^8.0.1
+  awesome_notifications: any
 
 dev_dependencies:
   flutter_test:

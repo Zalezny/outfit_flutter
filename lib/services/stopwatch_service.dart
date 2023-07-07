@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:outfit_flutter/services/service_event.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
 import 'package:outfit_flutter/utils/time_utils.dart';
 
@@ -16,8 +17,24 @@ class StopwatchService {
   static int duration = 0;
   static Future<void> initializeService() async {
     final service = FlutterBackgroundService();
+    final notification = AwesomeNotifications();
 
-    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    notification.initialize(
+      'resource://drawable/katya_logo',
+      [
+        NotificationChannel(
+          channelKey: notificationChannelId,
+          channelName: notificationTitle,
+          channelDescription: notificationTitle,
+          defaultColor: AppColors.red_1867,
+          importance: NotificationImportance.Max,
+        )
+      ],
+      debug: true,
+    );
+
+    /*
+      const AndroidNotificationChannel channel = AndroidNotificationChannel(
       notificationChannelId,
       notificationTitle,
       description: 'This channel is used for katya stoper.',
@@ -29,7 +46,7 @@ class StopwatchService {
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
-
+*/
     await service.configure(
       androidConfiguration: AndroidConfiguration(
         onStart: onStart,
@@ -47,11 +64,31 @@ class StopwatchService {
   @pragma('vm:entry-point')
   static Future<void> onStart(ServiceInstance service) async {
     DartPluginRegistrant.ensureInitialized();
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    //final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    final awesomeNotifications = AwesomeNotifications();
     var timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       duration++;
       if (service is AndroidServiceInstance) {
         if (await service.isForegroundService()) {
+          await awesomeNotifications.createNotification(
+            content: NotificationContent(
+                id: notificationId,
+                channelKey: notificationChannelId,
+                title: 'Stoper Katya',
+                body: 'Twój czas to: ${TimeUtils.stringifyTimeByInt(duration)}',
+                payload: {},
+                notificationLayout: NotificationLayout.BigText),
+            actionButtons: [
+              NotificationActionButton(
+                  key: 'FINISH_BUTTON', label: 'FINISH', color: AppColors.red_1867, showInCompactView: true),
+              NotificationActionButton(
+                key: 'GO_BUTTON',
+                label: 'GO',
+                color: AppColors.red_1867,
+              ),
+            ],
+          );
+          /*
           flutterLocalNotificationsPlugin.show(
             notificationId,
             'Stoper Katya',
@@ -67,6 +104,7 @@ class StopwatchService {
               ),
             ),
           );
+          */
         }
       }
 
@@ -89,8 +127,4 @@ class StopwatchService {
       });
     }
   }
-
-  
-
-  
 }

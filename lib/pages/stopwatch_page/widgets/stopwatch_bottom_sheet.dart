@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_picker/picker.dart';
 import 'package:intl/intl.dart';
+import 'package:outfit_flutter/classes/time.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
 import 'package:outfit_flutter/utils/time_utils.dart';
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
@@ -129,7 +129,7 @@ class _StopwatchBottomSheetState extends State<StopwatchBottomSheet> {
         hideHeader: true,
         title: const Text("Wybierz czas trwania"),
         onConfirm: (Picker picker, List<int> value) {
-          _workTime = Time(value[0], value[1], value[2]);
+          _workTime = Time(hour: value[0], minute: value[1], second: value[2]);
           _timeTextFormController.text = TimeUtils.stringifyTime(_workTime);
         }).showDialog(context);
   }

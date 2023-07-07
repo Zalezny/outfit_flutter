@@ -1,5 +1,5 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
+import 'package:outfit_flutter/classes/time.dart';
 import 'package:outfit_flutter/utils/total_time_helper.dart';
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
