@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:outfit_flutter/pages/outfit_page/bloc/outfit_bloc.dart';
 import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_item.dart';
+import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_profile_dialog.dart';
 import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_top_row.dart';
 import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
@@ -21,9 +22,6 @@ class _OutfitPageState extends State<OutfitPage> {
   bool _showBin = false;
   final _bloc = GetIt.I<OutfitBloc>();
   List<OutfitDto> _outfits = [];
-  final List<String> _userList = ['Kasia', 'Mama'];
-
-  int? _choiceChipValue;
 
   void _changeShowBin() {
     setState(() {
@@ -65,41 +63,13 @@ class _OutfitPageState extends State<OutfitPage> {
     );
   }
 
-  void _showStarterDialog() {
-    _sharedPref.getIsKatya().then((isKatya) {
-      if (isKatya != null) {
-        _choiceChipValue = isKatya ? 0 : 1;
-        setState(() {});
-      }
-    });
-
+  void _showProfileDialog({bool? isInitPage}) {
+    isInitPage ??= false;
     showDialog(
       context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text(
-          "Wybierz swój profil",
-          style: Theme.of(context).textTheme.titleMedium,
-          textAlign: TextAlign.center,
-        ),
-        content: Wrap(
-          alignment: WrapAlignment.spaceEvenly,
-          spacing: 10.0,
-          children: List<Widget>.generate(_userList.length, (index) {
-            return ChoiceChip(
-                selected: _choiceChipValue == index,
-                label: Text(
-                  _userList[index],
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.white),
-                ),
-                onSelected: (selected) {
-                  _choiceChipValue = index;
-                  _sharedPref.saveIsKatya(_choiceChipValue == 0);
-                  Navigator.of(context).pop();
-                  setState(() {});
-                });
-          }).toList(),
-        ),
+      barrierDismissible: isInitPage ? true : false,
+      builder: (context) => OutfitProfileDialog(
+        isInitPage: isInitPage!,
       ),
     );
   }
@@ -108,7 +78,7 @@ class _OutfitPageState extends State<OutfitPage> {
   void initState() {
     super.initState();
     _sharedPref.getIsKatya().then((isKatya) {
-      isKatya == null ? _showStarterDialog() : null;
+      isKatya == null ? _showProfileDialog(isInitPage: true) : null;
     });
   }
 
@@ -125,7 +95,7 @@ class _OutfitPageState extends State<OutfitPage> {
               OutfitTopRow(
                 onDeleteClicked: _changeShowBin,
                 onAddClicked: _showBottomSheet,
-                onProfileClicked: _showStarterDialog,
+                onProfileClicked: _showProfileDialog,
               ),
               BlocProvider(
                 create: (context) => _bloc..add(InitOutfitEvent()),
