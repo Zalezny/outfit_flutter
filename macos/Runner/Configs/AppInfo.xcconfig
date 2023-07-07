@@ -8,7 +8,7 @@
 PRODUCT_NAME = outfit_flutter
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.outfitFlutter
+PRODUCT_BUNDLE_IDENTIFIER = com.zalezny.outfitFlutter
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.zalezny. All rights reserved.
