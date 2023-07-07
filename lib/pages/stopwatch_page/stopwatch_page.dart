@@ -3,7 +3,6 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
-import 'package:outfit_flutter/custom_widgets/custom_toast.dart';
 import 'package:outfit_flutter/pages/stopwatch_page/widgets/stopwatch_card.dart';
 import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/utils/shared_preference.dart';
