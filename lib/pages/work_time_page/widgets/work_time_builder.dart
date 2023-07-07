@@ -21,7 +21,6 @@ class WorkTimeBuilder extends StatefulWidget {
 }
 
 class _WorkTimeBuilderState extends State<WorkTimeBuilder> {
-  
   @override
   void initState() {
     super.initState();

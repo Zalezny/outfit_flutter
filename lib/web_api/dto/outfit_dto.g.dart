@@ -9,7 +9,7 @@ part of 'outfit_dto.dart';
 _$_OutfitDto _$$_OutfitDtoFromJson(Map<String, dynamic> json) => _$_OutfitDto(
       sId: json['_id'] as String,
       title: json['title'] as String,
-      hour: json['hour'] as String,
+      hour: json['hour'] as String?,
       date: json['date'] as String,
       momHours: (json['momHours'] as List<dynamic>)
           .map((e) => WorkTime.fromJson(e as Map<String, dynamic>))

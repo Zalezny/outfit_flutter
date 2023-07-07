@@ -11,7 +11,7 @@ class OutfitDto with _$OutfitDto {
   const factory OutfitDto({
     @JsonKey(name: '_id') required String sId,
     required String title,
-    required String hour,
+    String? hour,
     required String date,
     required List<WorkTime> momHours,
     required List<WorkTime> kateHours,

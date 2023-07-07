@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:outfit_flutter/pages/outfit_page/bloc/outfit_bloc.dart';
 import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_item.dart';
@@ -54,6 +55,7 @@ class _OutfitPageState extends State<OutfitPage> {
               ),
               onFieldSubmitted: (outfitName) {
                 _bloc.add(AddOutfitEvent(outfitName));
+                Fluttertoast.showToast(msg: 'Dodano nowy outfit');
                 Navigator.of(context).pop();
               },
             ),

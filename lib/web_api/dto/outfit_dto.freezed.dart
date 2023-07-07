@@ -23,7 +23,7 @@ mixin _$OutfitDto {
   @JsonKey(name: '_id')
   String get sId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  String get hour => throw _privateConstructorUsedError;
+  String? get hour => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
   List<WorkTime> get momHours => throw _privateConstructorUsedError;
   List<WorkTime> get kateHours => throw _privateConstructorUsedError;
@@ -45,7 +45,7 @@ abstract class $OutfitDtoCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: '_id') String sId,
       String title,
-      String hour,
+      String? hour,
       String date,
       List<WorkTime> momHours,
       List<WorkTime> kateHours,
@@ -68,7 +68,7 @@ class _$OutfitDtoCopyWithImpl<$Res, $Val extends OutfitDto>
   $Res call({
     Object? sId = null,
     Object? title = null,
-    Object? hour = null,
+    Object? hour = freezed,
     Object? date = null,
     Object? momHours = null,
     Object? kateHours = null,
@@ -84,10 +84,10 @@ class _$OutfitDtoCopyWithImpl<$Res, $Val extends OutfitDto>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      hour: null == hour
+      hour: freezed == hour
           ? _value.hour
           : hour // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -122,7 +122,7 @@ abstract class _$$_OutfitDtoCopyWith<$Res> implements $OutfitDtoCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: '_id') String sId,
       String title,
-      String hour,
+      String? hour,
       String date,
       List<WorkTime> momHours,
       List<WorkTime> kateHours,
@@ -143,7 +143,7 @@ class __$$_OutfitDtoCopyWithImpl<$Res>
   $Res call({
     Object? sId = null,
     Object? title = null,
-    Object? hour = null,
+    Object? hour = freezed,
     Object? date = null,
     Object? momHours = null,
     Object? kateHours = null,
@@ -159,10 +159,10 @@ class __$$_OutfitDtoCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      hour: null == hour
+      hour: freezed == hour
           ? _value.hour
           : hour // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -193,7 +193,7 @@ class _$_OutfitDto with DiagnosticableTreeMixin implements _OutfitDto {
   const _$_OutfitDto(
       {@JsonKey(name: '_id') required this.sId,
       required this.title,
-      required this.hour,
+      this.hour,
       required this.date,
       required final List<WorkTime> momHours,
       required final List<WorkTime> kateHours,
@@ -211,7 +211,7 @@ class _$_OutfitDto with DiagnosticableTreeMixin implements _OutfitDto {
   @override
   final String title;
   @override
-  final String hour;
+  final String? hour;
   @override
   final String date;
   final List<WorkTime> _momHours;
@@ -303,7 +303,7 @@ abstract class _OutfitDto implements OutfitDto {
   const factory _OutfitDto(
       {@JsonKey(name: '_id') required final String sId,
       required final String title,
-      required final String hour,
+      final String? hour,
       required final String date,
       required final List<WorkTime> momHours,
       required final List<WorkTime> kateHours,
@@ -319,7 +319,7 @@ abstract class _OutfitDto implements OutfitDto {
   @override
   String get title;
   @override
-  String get hour;
+  String? get hour;
   @override
   String get date;
   @override
