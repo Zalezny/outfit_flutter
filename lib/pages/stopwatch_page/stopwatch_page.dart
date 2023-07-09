@@ -66,6 +66,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                           outfitName: widget.outfit.title,
                           topText: '${state.timeText}\nCzas trwania',
                           isStopwatchGo: true,
+                          outfitId: widget.outfit.sId,
                         );
                       } else if (state is StopwatchFailState) {
                         Fluttertoast.showToast(msg: 'Failed start stopwatch');
@@ -75,6 +76,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                         outfitName: widget.outfit.title,
                         topText: "Dotknij, by uruchomić \nstoper",
                         isStopwatchGo: false,
+                        outfitId: widget.outfit.sId,
                       );
                     })),
                   ),

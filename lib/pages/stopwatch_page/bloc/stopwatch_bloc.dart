@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:meta/meta.dart';
+import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
 import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/services/service_event.dart';
 import 'package:outfit_flutter/utils/time_utils.dart';
@@ -20,7 +21,12 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
   StopwatchBloc(this._flutterBackgroundService, this._workTimeBloc) : super(StopwatchInitial()) {
     on<StopwatchEvent>((event, emit) async {
       if (event is StartStopwatchEvent) {
-        _flutterBackgroundService.startService();
+        await _flutterBackgroundService.startService();
+        _flutterBackgroundService.invoke(
+          ServiceEvent.dataToPayload,
+          StopwatchNotificationModel(outfitId: event.outfitId).toJson(),
+        );
+
         add(TickStopwatchEvent(0));
         _subscription = FlutterBackgroundService().on(ServiceEvent.update).listen((body) {
           if (body != null) add(TickStopwatchEvent(int.parse(body['seconds'])));

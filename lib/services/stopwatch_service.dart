@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+import 'package:outfit_flutter/controllers/notification_controller.dart';
+import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
 import 'package:outfit_flutter/services/service_event.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
@@ -61,26 +62,54 @@ class StopwatchService {
     );
   }
 
+  static Future<void> startListeningNotificationEvents() async {
+    AwesomeNotifications().setListeners(onActionReceivedMethod: NotificationController.onActionReceivedMethod);
+  }
+
   @pragma('vm:entry-point')
   static Future<void> onStart(ServiceInstance service) async {
     DartPluginRegistrant.ensureInitialized();
+
     //final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     final awesomeNotifications = AwesomeNotifications();
-    var timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+    Map<String, String>? payload;
+    if (service is AndroidServiceInstance) {
+      service.on(ServiceEvent.setAsForeground).listen((_) {
+        service.setAsForegroundService();
+      });
+
+      service.on(ServiceEvent.setAsBackground).listen((_) {
+        service.setAsBackgroundService();
+      });
+
+      service.on(ServiceEvent.stopService).listen((_) {
+        duration = 0;
+        service.stopSelf();
+      });
+      service.on(ServiceEvent.dataToPayload).listen((event) {
+        payload = StopwatchNotificationModel.fromJson(event!).toMapString();
+      });
+    }
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
       duration++;
       if (service is AndroidServiceInstance) {
         if (await service.isForegroundService()) {
+          NotificationContent notificationContent = NotificationContent(
+              id: notificationId,
+              channelKey: notificationChannelId,
+              payload: payload,
+              title: 'Stoper Katya',
+              body: 'Twój czas to: ${TimeUtils.stringifyTimeByInt(duration)}',
+              notificationLayout: NotificationLayout.BigText);
+
           await awesomeNotifications.createNotification(
-            content: NotificationContent(
-                id: notificationId,
-                channelKey: notificationChannelId,
-                title: 'Stoper Katya',
-                body: 'Twój czas to: ${TimeUtils.stringifyTimeByInt(duration)}',
-                payload: {},
-                notificationLayout: NotificationLayout.BigText),
+            content: notificationContent,
             actionButtons: [
               NotificationActionButton(
-                  key: 'FINISH_BUTTON', label: 'FINISH', color: AppColors.red_1867, showInCompactView: true),
+                key: 'FINISH_BUTTON',
+                label: 'FINISH',
+                color: AppColors.red_1867,
+              ),
               NotificationActionButton(
                 key: 'GO_BUTTON',
                 label: 'GO',
@@ -88,6 +117,7 @@ class StopwatchService {
               ),
             ],
           );
+
           /*
           flutterLocalNotificationsPlugin.show(
             notificationId,
@@ -110,21 +140,5 @@ class StopwatchService {
 
       service.invoke(ServiceEvent.update, {'seconds': duration.toString()});
     });
-
-    if (service is AndroidServiceInstance) {
-      service.on(ServiceEvent.setAsForeground).listen((event) {
-        service.setAsForegroundService();
-      });
-
-      service.on(ServiceEvent.setAsBackground).listen((event) {
-        service.setAsBackgroundService();
-      });
-
-      service.on(ServiceEvent.stopService).listen((event) {
-        duration = 0;
-        timer.cancel();
-        service.stopSelf();
-      });
-    }
   }
 }

@@ -3,7 +3,10 @@ part of 'stopwatch_bloc.dart';
 @immutable
 abstract class StopwatchEvent {}
 
-class StartStopwatchEvent extends StopwatchEvent {}
+class StartStopwatchEvent extends StopwatchEvent {
+  final String outfitId;
+  StartStopwatchEvent(this.outfitId);
+}
 
 class FinishStopwatchEvent extends StopwatchEvent {}
 

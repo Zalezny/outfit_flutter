@@ -4,4 +4,5 @@ class ServiceEvent {
   static const setAsBackground = 'setAsBackground';
   static const stopServiceUpdate = 'stopServiceUpdate';
   static const stopService = 'stopService';
+  static const dataToPayload = 'dataToPayload';
 }

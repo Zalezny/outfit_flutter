@@ -6,6 +6,7 @@ import 'package:outfit_flutter/pages/outfit_page/bloc/outfit_bloc.dart';
 import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_item.dart';
 import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_profile_dialog.dart';
 import 'package:outfit_flutter/pages/outfit_page/widgets/outfit_top_row.dart';
+import 'package:outfit_flutter/services/stopwatch_service.dart';
 import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
@@ -80,6 +81,7 @@ class _OutfitPageState extends State<OutfitPage> {
     _sharedPref.getIsKatya().then((isKatya) {
       isKatya == null ? _showProfileDialog(isInitPage: true) : null;
     });
+    StopwatchService.startListeningNotificationEvents();
   }
 
   @override

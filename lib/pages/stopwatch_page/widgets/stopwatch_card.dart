@@ -8,12 +8,14 @@ class StopwatchCard extends StatelessWidget {
   final String topText;
   final bool isStopwatchGo;
   final String outfitName;
+  final String outfitId;
   final VoidCallback onHandAdded;
   const StopwatchCard(
       {super.key,
       required this.topText,
       required this.isStopwatchGo,
       required this.outfitName,
+      required this.outfitId,
       required this.onHandAdded});
 
   @override
@@ -53,7 +55,7 @@ class StopwatchCard extends StatelessWidget {
                             description: 'Twój czas zostanie zapisany do $outfitName',
                             primaryButtonText: 'TAK',
                             secondaryButtonText: 'NIE'))
-                    : BlocProvider.of<StopwatchBloc>(context).add(StartStopwatchEvent());
+                    : BlocProvider.of<StopwatchBloc>(context).add(StartStopwatchEvent(outfitId));
               },
               child: Image.asset(
                 isStopwatchGo ? 'assets/images/stoper_go.png' : 'assets/images/stoper_rest.png',
