@@ -13,7 +13,7 @@ Na chwilę obecną zastosowano takie biblioteki jak:
   - nested_scroll_views - obsługa zagnieżdżonych scrollów (w tym wypadku TabBar i listView.builder)
   - flutter_background_service - obsługa serwisu background oraz foreground dla stopera
   - flutter_background_service_android - obsługa serwisu dla androida
-  - awesome_notifications - obsługa lokalnych powiadomień foreground dla stopera, dodaje możliwość zaimplementowania przycisków
+  - awesome_notifications - obsługa lokalnych powiadomień foreground oraz ich customizacja dla stopera
   - freezed - obsługa autogeneracji plików dto
   - pin_code_fields - ui dla kodu pin
   - fluttertoast - ui dla toast'ów informujących użytkownika
