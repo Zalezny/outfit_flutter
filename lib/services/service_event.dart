@@ -5,4 +5,5 @@ class ServiceEvent {
   static const stopServiceUpdate = 'stopServiceUpdate';
   static const stopService = 'stopService';
   static const dataToPayload = 'dataToPayload';
+  static const checkTime = 'checkTime';
 }
