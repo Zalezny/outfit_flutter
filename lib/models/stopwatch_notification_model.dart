@@ -9,11 +9,13 @@ abstract class StopwatchNotificationModel with _$StopwatchNotificationModel {
   const StopwatchNotificationModel._();
   const factory StopwatchNotificationModel({
     required String outfitId,
+    bool? isFinishStopwatch,
   }) = _StopwatchNotificationModel;
 
   factory StopwatchNotificationModel.fromJson(Map<String, Object?> json) => _$StopwatchNotificationModelFromJson(json);
 
   Map<String, String> toMapString() => {
         'outfitId': outfitId,
+        if(isFinishStopwatch != null) 'isFinishStopwatch': isFinishStopwatch.toString(),
       };
 }

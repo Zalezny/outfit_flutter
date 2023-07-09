@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:outfit_flutter/custom_widgets/custom_dialog.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
@@ -13,13 +15,14 @@ class OutfitItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: outfit.ended? 0.4 : 1.0,
+      opacity: outfit.ended ? 0.4 : 1.0,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          Navigator.push(
+          Navigator.pushNamed(
             context,
-            MaterialPageRoute(builder: (context) => StopwatchPager(outfit: outfit)),
+            '/stopwatch-pager',
+            arguments: outfit,
           );
         },
         child: Card(

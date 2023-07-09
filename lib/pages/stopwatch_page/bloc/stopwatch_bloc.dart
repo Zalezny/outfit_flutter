@@ -28,7 +28,7 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
         );
 
         add(TickStopwatchEvent(0));
-        _subscription = FlutterBackgroundService().on(ServiceEvent.update).listen((body) {
+        _subscription = _flutterBackgroundService.on(ServiceEvent.update).listen((body) {
           if (body != null) add(TickStopwatchEvent(int.parse(body['seconds'])));
         })
           ..onError((e) {
@@ -48,7 +48,7 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
         }
       } else if (event is CheckStopwatchEvent) {
         if (await _flutterBackgroundService.isRunning()) {
-          _subscription = FlutterBackgroundService().on(ServiceEvent.update).listen((body) {
+          _subscription = _flutterBackgroundService.on(ServiceEvent.update).listen((body) {
             if (body != null) add(TickStopwatchEvent(int.parse(body['seconds'])));
           })
             ..onError((e) {

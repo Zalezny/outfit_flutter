@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:nested_scroll_views/material.dart';
+import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
 import 'package:outfit_flutter/pages/stopwatch_page/stopwatch_page.dart';
 import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/pages/work_time_page/work_time_page.dart';
 import 'package:outfit_flutter/utils/custom_physics.dart';
+import 'package:outfit_flutter/web_api/connections/outfit_connection.dart';
 import 'package:outfit_flutter/web_api/connections/work_time_connection.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
@@ -14,8 +16,8 @@ import '../stopwatch_page/widgets/stopwatch_top_row.dart';
 
 class StopwatchPager extends StatefulWidget {
   final OutfitDto? outfit;
-  final String? outfitId;
-  const StopwatchPager({super.key, required this.outfit, this.outfitId});
+  final StopwatchNotificationModel? notificationModel;
+  const StopwatchPager({super.key, this.outfit, this.notificationModel});
 
   @override
   State<StopwatchPager> createState() => _StopwatchPagerState();
@@ -37,40 +39,62 @@ class _StopwatchPagerState extends State<StopwatchPager> {
 
   @override
   Widget build(BuildContext context) {
-    final PageController controller = PageController();
+    if (widget.outfit == null) {
+      return SafeArea(
+        child: Scaffold(
+          body: FutureBuilder(
+            future: GetIt.I<OutfitConnection>().getOutfits(),
+            builder: (ctx, snapshot) {
+              if (snapshot.hasData) {
+                outfit = snapshot.data!.where((element) => element.sId == widget.notificationModel!.outfitId).first;
+                return _buildBody();
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+        ),
+      );
+    }
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            StopwatchTopRow(
-              title: outfit!.title,
-              onEndedClick: endedCallback,
-            ),
-            Expanded(
-              child: MultiBlocProvider(
-                providers: [
-                  BlocProvider<MomWorkTimeBloc>(
-                      create: ((_) => WorkTimeBloc(GetIt.I<WorkTimeConnection>(), false, outfit!.sId))),
-                  BlocProvider<KatyaWorkTimeBloc>(
-                      create: ((_) => WorkTimeBloc(GetIt.I<WorkTimeConnection>(), true, outfit!.sId))),
-                ],
-                child: NestedPageView(
-                  wantKeepAlive: true,
-                  physics: const ClampingScrollPhysics(parent: CustomPhysics()),
-                  controller: controller,
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    StopwatchPage(outfit: outfit!),
-                    WorkTimePage(
-                      outfitId: outfit!.sId,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+        body: _buildBody(),
       ),
+    );
+  }
+
+  Widget _buildBody() {
+    final PageController controller = PageController();
+    return Column(
+      children: [
+        StopwatchTopRow(
+          title: outfit!.title,
+          onEndedClick: endedCallback,
+        ),
+        Expanded(
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<MomWorkTimeBloc>(
+                  create: ((_) => WorkTimeBloc(GetIt.I<WorkTimeConnection>(), false, outfit!.sId))),
+              BlocProvider<KatyaWorkTimeBloc>(
+                  create: ((_) => WorkTimeBloc(GetIt.I<WorkTimeConnection>(), true, outfit!.sId))),
+            ],
+            child: NestedPageView(
+              wantKeepAlive: true,
+              physics: const ClampingScrollPhysics(parent: CustomPhysics()),
+              controller: controller,
+              scrollDirection: Axis.vertical,
+              children: [
+                StopwatchPage(
+                  outfit: outfit!,
+                ),
+                WorkTimePage(
+                  outfitId: outfit!.sId,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 

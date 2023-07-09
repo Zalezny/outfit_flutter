@@ -26,6 +26,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
   final _sharedPref = GetIt.I<SharedPreference>();
   bool? _isKatya;
   String? _userName;
+  bool? _isStopCommand;
 
   @override
   void initState() {
@@ -61,6 +62,12 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     create: (_) => _stopwatchBloc..add(CheckStopwatchEvent()),
                     child: BlocBuilder<StopwatchBloc, StopwatchState>(builder: ((context, state) {
                       if (state is StopwatchRunningState) {
+                        if (_isStopCommand == true) {
+                          _stopwatchBloc.add(FinishStopwatchEvent());
+                          Fluttertoast.showToast(msg: 'Success finished Stopwatch');
+                          _isStopCommand = null;
+                        }
+
                         return StopwatchCard(
                           onHandAdded: _onHandAdded,
                           outfitName: widget.outfit.title,

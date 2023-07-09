@@ -1,10 +1,15 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
 import 'package:outfit_flutter/pages/outfit_page/outfit_page.dart';
+import 'package:outfit_flutter/pages/stopwatch_pager/stopwatch_pager.dart';
 import 'package:outfit_flutter/theme/default_theme.dart';
 
+import 'web_api/dto/outfit_dto.dart';
+
 class App extends StatefulWidget {
-  const App({super.key});
+  final String? initialRoute;
+  final Object? initData;
+  const App({super.key, this.initialRoute, this.initData});
 
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static const String name = 'Outfit Katya';
@@ -14,13 +19,14 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: App.navigatorKey,
       title: App.name,
       theme: DefaultTheme().buildThemeData(),
-      initialRoute: '/',
+      initialRoute: widget.initialRoute ?? '/',
       onGenerateRoute: _generateRoute,
     );
   }
@@ -30,12 +36,20 @@ class _AppState extends State<App> {
       case '/':
         return MaterialPageRoute(builder: (ctx) => const OutfitPage());
       case '/stopwatch-pager':
-        return MaterialPageRoute(builder: (ctx) {
-          final ReceivedAction receivedAction = settings.arguments as ReceivedAction;
-          print(receivedAction.toMap());
-          return const OutfitPage();
-          // return StopwatchPager(outfit: outfit);
-        });
+        return MaterialPageRoute(
+          builder: (ctx) {
+            final Object? arguments = widget.initData ?? settings.arguments;
+            
+            if (arguments is OutfitDto) {
+              return StopwatchPager(outfit: arguments);
+            } else if (arguments is StopwatchNotificationModel) {
+              return StopwatchPager(notificationModel: arguments);
+            } else {
+              assert(false, 'Wrong arguments!');
+              return const SizedBox();
+            }
+          },
+        );
       default:
         assert(false, 'Page${settings.name} not found');
         return null;

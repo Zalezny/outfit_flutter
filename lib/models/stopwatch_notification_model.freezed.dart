@@ -22,6 +22,7 @@ StopwatchNotificationModel _$StopwatchNotificationModelFromJson(
 /// @nodoc
 mixin _$StopwatchNotificationModel {
   String get outfitId => throw _privateConstructorUsedError;
+  bool? get isFinishStopwatch => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,7 @@ abstract class $StopwatchNotificationModelCopyWith<$Res> {
       _$StopwatchNotificationModelCopyWithImpl<$Res,
           StopwatchNotificationModel>;
   @useResult
-  $Res call({String outfitId});
+  $Res call({String outfitId, bool? isFinishStopwatch});
 }
 
 /// @nodoc
@@ -54,12 +55,17 @@ class _$StopwatchNotificationModelCopyWithImpl<$Res,
   @override
   $Res call({
     Object? outfitId = null,
+    Object? isFinishStopwatch = freezed,
   }) {
     return _then(_value.copyWith(
       outfitId: null == outfitId
           ? _value.outfitId
           : outfitId // ignore: cast_nullable_to_non_nullable
               as String,
+      isFinishStopwatch: freezed == isFinishStopwatch
+          ? _value.isFinishStopwatch
+          : isFinishStopwatch // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -73,7 +79,7 @@ abstract class _$$_StopwatchNotificationModelCopyWith<$Res>
       __$$_StopwatchNotificationModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String outfitId});
+  $Res call({String outfitId, bool? isFinishStopwatch});
 }
 
 /// @nodoc
@@ -90,12 +96,17 @@ class __$$_StopwatchNotificationModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? outfitId = null,
+    Object? isFinishStopwatch = freezed,
   }) {
     return _then(_$_StopwatchNotificationModel(
       outfitId: null == outfitId
           ? _value.outfitId
           : outfitId // ignore: cast_nullable_to_non_nullable
               as String,
+      isFinishStopwatch: freezed == isFinishStopwatch
+          ? _value.isFinishStopwatch
+          : isFinishStopwatch // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -103,17 +114,21 @@ class __$$_StopwatchNotificationModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_StopwatchNotificationModel extends _StopwatchNotificationModel {
-  const _$_StopwatchNotificationModel({required this.outfitId}) : super._();
+  const _$_StopwatchNotificationModel(
+      {required this.outfitId, this.isFinishStopwatch})
+      : super._();
 
   factory _$_StopwatchNotificationModel.fromJson(Map<String, dynamic> json) =>
       _$$_StopwatchNotificationModelFromJson(json);
 
   @override
   final String outfitId;
+  @override
+  final bool? isFinishStopwatch;
 
   @override
   String toString() {
-    return 'StopwatchNotificationModel(outfitId: $outfitId)';
+    return 'StopwatchNotificationModel(outfitId: $outfitId, isFinishStopwatch: $isFinishStopwatch)';
   }
 
   @override
@@ -122,12 +137,14 @@ class _$_StopwatchNotificationModel extends _StopwatchNotificationModel {
         (other.runtimeType == runtimeType &&
             other is _$_StopwatchNotificationModel &&
             (identical(other.outfitId, outfitId) ||
-                other.outfitId == outfitId));
+                other.outfitId == outfitId) &&
+            (identical(other.isFinishStopwatch, isFinishStopwatch) ||
+                other.isFinishStopwatch == isFinishStopwatch));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, outfitId);
+  int get hashCode => Object.hash(runtimeType, outfitId, isFinishStopwatch);
 
   @JsonKey(ignore: true)
   @override
@@ -145,8 +162,9 @@ class _$_StopwatchNotificationModel extends _StopwatchNotificationModel {
 }
 
 abstract class _StopwatchNotificationModel extends StopwatchNotificationModel {
-  const factory _StopwatchNotificationModel({required final String outfitId}) =
-      _$_StopwatchNotificationModel;
+  const factory _StopwatchNotificationModel(
+      {required final String outfitId,
+      final bool? isFinishStopwatch}) = _$_StopwatchNotificationModel;
   const _StopwatchNotificationModel._() : super._();
 
   factory _StopwatchNotificationModel.fromJson(Map<String, dynamic> json) =
@@ -154,6 +172,8 @@ abstract class _StopwatchNotificationModel extends StopwatchNotificationModel {
 
   @override
   String get outfitId;
+  @override
+  bool? get isFinishStopwatch;
   @override
   @JsonKey(ignore: true)
   _$$_StopwatchNotificationModelCopyWith<_$_StopwatchNotificationModel>
