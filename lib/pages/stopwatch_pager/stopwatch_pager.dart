@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:nested_scroll_views/material.dart';
 import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
+import 'package:outfit_flutter/pages/app_page/cubit/notification_cubit.dart';
 import 'package:outfit_flutter/pages/stopwatch_page/stopwatch_page.dart';
 import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/pages/work_time_page/work_time_page.dart';
@@ -16,8 +17,8 @@ import '../stopwatch_page/widgets/stopwatch_top_row.dart';
 
 class StopwatchPager extends StatefulWidget {
   final OutfitDto? outfit;
-  final StopwatchNotificationModel? notificationModel;
-  const StopwatchPager({super.key, this.outfit, this.notificationModel});
+  final String? outfitId;
+  const StopwatchPager({super.key, this.outfit, this.outfitId});
 
   @override
   State<StopwatchPager> createState() => _StopwatchPagerState();
@@ -39,6 +40,7 @@ class _StopwatchPagerState extends State<StopwatchPager> {
 
   @override
   Widget build(BuildContext context) {
+    
     if (widget.outfit == null) {
       return SafeArea(
         child: Scaffold(
@@ -46,7 +48,7 @@ class _StopwatchPagerState extends State<StopwatchPager> {
             future: GetIt.I<OutfitConnection>().getOutfits(),
             builder: (ctx, snapshot) {
               if (snapshot.hasData) {
-                outfit = snapshot.data!.where((element) => element.sId == widget.notificationModel!.outfitId).first;
+                outfit = snapshot.data!.where((element) => element.sId == widget.outfitId).first;
                 return _buildBody();
               }
               return const Center(child: CircularProgressIndicator());

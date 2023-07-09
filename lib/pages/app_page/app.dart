@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
 import 'package:outfit_flutter/pages/outfit_page/outfit_page.dart';
 import 'package:outfit_flutter/pages/stopwatch_pager/stopwatch_pager.dart';
 import 'package:outfit_flutter/theme/default_theme.dart';
 
-import 'web_api/dto/outfit_dto.dart';
+import '../../web_api/dto/outfit_dto.dart';
+import 'cubit/notification_cubit.dart';
 
 class App extends StatefulWidget {
   final String? initialRoute;
@@ -19,7 +21,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,11 +40,24 @@ class _AppState extends State<App> {
         return MaterialPageRoute(
           builder: (ctx) {
             final Object? arguments = widget.initData ?? settings.arguments;
-            
+
             if (arguments is OutfitDto) {
-              return StopwatchPager(outfit: arguments);
+              return BlocProvider(
+                create: (context) => NotificationCubit(),
+                child: StopwatchPager(outfit: arguments),
+              );
             } else if (arguments is StopwatchNotificationModel) {
-              return StopwatchPager(notificationModel: arguments);
+              final cubit = NotificationCubit();
+
+              return BlocProvider(
+                create: (context) {
+                  if (arguments.isFinishStopwatch == true) {
+                    return cubit..finishStopwatch(true);
+                  }
+                  return cubit;
+                },
+                child: StopwatchPager(outfitId: arguments.outfitId),
+              );
             } else {
               assert(false, 'Wrong arguments!');
               return const SizedBox();

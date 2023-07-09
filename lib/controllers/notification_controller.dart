@@ -1,5 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:outfit_flutter/app.dart';
+import 'package:outfit_flutter/pages/app_page/app.dart';
 import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
 
 class NotificationController {

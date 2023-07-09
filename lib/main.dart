@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
 import 'package:outfit_flutter/services/stopwatch_service.dart';
-import 'app.dart';
+import 'pages/app_page/app.dart';
 import 'di/injectable.dart';
 
 void main() async {
