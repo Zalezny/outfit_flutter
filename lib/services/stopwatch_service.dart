@@ -100,6 +100,7 @@ class StopwatchService {
               payload: payload,
               title: 'Stoper Katya',
               body: 'Twój czas to: ${TimeUtils.stringifyTimeByInt(duration)}',
+              backgroundColor: AppColors.red_1867,
               notificationLayout: NotificationLayout.BigText);
 
           await awesomeNotifications.createNotification(
