@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
 import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/services/service_event.dart';
+import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/utils/time_utils.dart';
 
 part 'stopwatch_event.dart';
@@ -48,8 +50,18 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
         }
       } else if (event is CheckStopwatchEvent) {
         if (await _flutterBackgroundService.isRunning()) {
+          final _sharedPref = GetIt.I<SharedPreference>();
+          final isFinish = await _sharedPref.isFinishStopwatch();
+          _sharedPref.saveIsFinishStopwatch(false);
           _subscription = _flutterBackgroundService.on(ServiceEvent.update).listen((body) {
-            if (body != null) add(TickStopwatchEvent(int.parse(body['seconds'])));
+            if (body != null) {
+              if (isFinish == true) {
+                _duration = int.parse(body['seconds']);
+                add(FinishStopwatchEvent());
+              } else {
+                add(TickStopwatchEvent(int.parse(body['seconds'])));
+              }
+            }
           })
             ..onError((e) {
               emit(StopwatchFailState(e.toString()));

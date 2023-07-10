@@ -1,14 +1,11 @@
-import 'dart:convert';
-
 import 'package:injectable/injectable.dart';
-import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
 class SharedPreference {
 
   static const _isKatyaKey = 'ISKATYA';
-  static const _activeStopwatchOutfitKey = 'ACTIVE_STOPWATCH_OUTFIT';
+  static const _isFinishStopwatch = 'IS_FINISH_STOPWATCH';
 
   Future<void> _savePreference(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -56,12 +53,11 @@ class SharedPreference {
     return isKatya ? 'KASIA' : 'MAMA';
   }
 
-  void saveActiveStopwatchOutfit(OutfitDto outfit) {
-    _savePreference(_activeStopwatchOutfitKey, jsonEncode(outfit.toJson()));
+  void saveIsFinishStopwatch(bool value) {
+    _saveBool(_isFinishStopwatch, value);
   }
 
-  Future<OutfitDto> getActiveStopwatchOutfit() async {
-    final jsonOutfit = await _getPreference(_activeStopwatchOutfitKey);
-    return OutfitDto.fromJson(jsonDecode(jsonOutfit));
+  Future<bool?> isFinishStopwatch() async{
+    return await _getBool(_isFinishStopwatch);
   }
 }

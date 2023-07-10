@@ -8,7 +8,7 @@ import 'di/injectable.dart';
 
 void main() async {
   String? route;
-  Object? data;
+  StopwatchNotificationModel? data;
   initializeDateFormatting('pl_PL');
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
@@ -20,6 +20,7 @@ void main() async {
   if (receivedAction?.buttonKeyPressed == 'FINISH_BUTTON') {
     route = '/stopwatch-pager';
     data = StopwatchNotificationModel.fromJson(receivedAction!.payload!);
+    data = data.copyWith(isFinishStopwatch: true);
   }
 
   runApp(App(initialRoute: route, initData: data));

@@ -53,7 +53,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                     color: Theme.of(context).primaryColorDark,
                     child: Center(
                       child: Text(
-                        "Dane zapisywane do:\n${snapshot.data!.last}",
+                        "Dane zapisywane do:\n${snapshot.data![1]}",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
                       ),

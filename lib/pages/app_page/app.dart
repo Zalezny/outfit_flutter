@@ -5,6 +5,7 @@ import 'package:outfit_flutter/pages/outfit_page/outfit_page.dart';
 import 'package:outfit_flutter/pages/stopwatch_pager/stopwatch_pager.dart';
 import 'package:outfit_flutter/theme/default_theme.dart';
 import 'package:outfit_flutter/utils/notification_handler.dart';
+import 'package:outfit_flutter/utils/shared_preference.dart';
 
 import '../../web_api/dto/outfit_dto.dart';
 
@@ -46,7 +47,10 @@ class _AppState extends State<App> {
               return StopwatchPager(outfit: arguments);
             } else if (arguments is StopwatchNotificationModel) {
               if(arguments.isFinishStopwatch == true) {
-                GetIt.I<NotificationHandler>().onFinishHandler(arguments.outfitId);
+                GetIt.I<SharedPreference>().saveIsFinishStopwatch(true);
+              }
+              else {
+                GetIt.I<SharedPreference>().saveIsFinishStopwatch(false);
               }
               return StopwatchPager(outfitId: arguments.outfitId);
             } else {
