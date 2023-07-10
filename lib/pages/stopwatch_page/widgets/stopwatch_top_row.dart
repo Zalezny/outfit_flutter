@@ -8,18 +8,20 @@ class StopwatchTopRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              GestureDetector(
-                behavior: HitTestBehavior.translucent,
+              InkWell(
                 onTap: () => Navigator.of(context).pop(),
-                child: Icon(
-                  Icons.arrow_back_ios_new_outlined,
-                  color: Theme.of(context).primaryColorLight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    Icons.arrow_back_ios_new_outlined,
+                    color: Theme.of(context).primaryColorLight,
+                  ),
                 ),
               ),
               Padding(
@@ -31,14 +33,16 @@ class StopwatchTopRow extends StatelessWidget {
               ),
             ],
           ),
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
+          InkWell(
             onTap: () {
               onEndedClick(context);
             },
-            child: Icon(
-              Icons.archive,
-              color: Theme.of(context).primaryColorLight,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.archive,
+                color: Theme.of(context).primaryColorLight,
+              ),
             ),
           ),
         ],

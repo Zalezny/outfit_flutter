@@ -39,8 +39,7 @@ class StopwatchCard extends StatelessWidget {
           const SizedBox(height: 30),
           Flexible(
             fit: FlexFit.loose,
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
+            child: InkWell(
               onTap: () {
                 isStopwatchGo
                     ? showDialog(

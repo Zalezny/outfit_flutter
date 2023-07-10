@@ -15,18 +15,20 @@ class OutfitTopRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // color: Theme.of(context).colorScheme.primary,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              GestureDetector(
-                behavior: HitTestBehavior.translucent,
+              InkWell(
                 onTap: onProfileClicked,
-                child: Icon(
-                  Icons.person,
-                  color: Theme.of(context).primaryColorLight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    Icons.person,
+                    color: Theme.of(context).primaryColorLight,
+                  ),
                 ),
               ),
               const SizedBox(width: 14),
@@ -38,21 +40,25 @@ class OutfitTopRow extends StatelessWidget {
           ),
           Row(
             children: [
-              GestureDetector(
-                behavior: HitTestBehavior.translucent,
+              InkWell(
                 onTap: onDeleteClicked,
-                child: Icon(
-                  Icons.delete,
-                  color: Theme.of(context).primaryColorLight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    Icons.delete,
+                    color: Theme.of(context).primaryColorLight,
+                  ),
                 ),
               ),
               const SizedBox(width: 24),
-              GestureDetector(
-                behavior: HitTestBehavior.translucent,
+              InkWell(
                 onTap: onAddClicked,
-                child: Icon(
-                  Icons.add_box_rounded,
-                  color: Theme.of(context).primaryColorLight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    Icons.add_box_rounded,
+                    color: Theme.of(context).primaryColorLight,
+                  ),
                 ),
               ),
             ],

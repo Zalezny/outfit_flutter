@@ -16,17 +16,16 @@ class OutfitItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Opacity(
       opacity: outfit.ended ? 0.4 : 1.0,
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          Navigator.pushNamed(
-            context,
-            '/stopwatch-pager',
-            arguments: outfit,
-          );
-        },
-        child: Card(
-          margin: const EdgeInsets.all(12),
+      child: Card(
+        margin: const EdgeInsets.all(12),
+        child: InkWell(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              '/stopwatch-pager',
+              arguments: outfit,
+            );
+          },
           child: Stack(alignment: Alignment.centerRight, children: [
             Center(
               child: Padding(
