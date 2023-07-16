@@ -1,15 +1,21 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
 import 'package:outfit_flutter/isar_db/models/outfit_entity.dart';
 import 'package:outfit_flutter/isar_db/repositories/outfit_repository.dart';
+import 'package:outfit_flutter/isar_db/repositories/work_time_repository.dart';
+import 'package:outfit_flutter/utils/shared_preference.dart';
+import 'package:outfit_flutter/web_api/connections/work_time_connection.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
 import '../web_api/connections/outfit_connection.dart';
+import '../web_api/dto/work_time.dart';
 
 @lazySingleton
 class ModelRepository {
   final OutfitConnection _outfitConnection = GetIt.I<OutfitConnection>();
   final OutfitRepository _outfitRepository = OutfitRepository();
+  final WorkTimeConnection _workTimeConnection = GetIt.I<WorkTimeConnection>();
 
   Future<List<OutfitDto>> initOutfits() async {
     try {
@@ -50,6 +56,37 @@ class ModelRepository {
     }
   }
 
+  Future<List<WorkTime>> readWorkTime(String outfitId) async {
+    final repo = WorkTimeRepository(outfitId);
+    final entities = await repo.readWorkTime();
+    if (entities != null) return entities.map((entity) => entity.toWorkTimeDto()).toList();
+    return [];
+  }
+
+  Future<void> insertWorkTime(String outfitId, WorkTime workTime) async {
+    final isKatya = await GetIt.I<SharedPreference>().getIsKatya();
+    final repo = WorkTimeRepository(outfitId);
+
+    if (isKatya == null) return;
+
+    try {
+      await _workTimeConnection.insertWorkTime(outfitId, workTime, isKatya);
+      await repo.insertWorkTime(_toWorkTimeEntity(workTime));
+    } catch (e) {
+      Exception(e);
+    }
+  }
+
+  Future<void> deleteWorkTime(String outfitId, String workTimeId, bool isKatyaTab) async {
+    final repo = WorkTimeRepository(outfitId);
+    try {
+      await _workTimeConnection.deleteWorkTime(outfitId, workTimeId, isKatyaTab);
+      await repo.deleteWorkTime(workTimeId);
+    } catch(e) {
+      Exception(e);
+    }
+  }
+
   OutfitEntity _toOutfitEntity(OutfitDto outfit) {
     return OutfitEntity(
       id: outfit.sId,
@@ -79,5 +116,14 @@ class ModelRepository {
           )
           .toList(),
     );
+  }
+
+  WorkTimeEntity _toWorkTimeEntity(WorkTime workTime) {
+    return WorkTimeEntity()
+      ..date = workTime.date
+      ..hour = workTime.hour
+      ..id = workTime.sId
+      ..minute = workTime.minute
+      ..second = workTime.second;
   }
 }

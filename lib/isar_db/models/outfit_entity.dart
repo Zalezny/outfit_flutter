@@ -72,5 +72,11 @@ class WorkTimeEntity {
 
   String? date;
 
-
+  WorkTime toWorkTimeDto() => WorkTime(
+        hour: hour!,
+        minute: minute!,
+        second: second!,
+        date: date!,
+        sId: id!,
+      );
 }
