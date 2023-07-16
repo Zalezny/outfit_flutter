@@ -28,10 +28,11 @@ W projekcie istnieją na chwilę obecną trzy klasy bloc:
 Do obsługi zapytań REST APi używany jest podział na foldery connections, dto, exceptions oraz services.
 
 
-## TODO
+## Schemat komunikacji pomiędzy UI, Blocem a Model'em 
 
-- Implementacja próśb o permisje
-- Udoskonalenie przycisków na powiadomieniu
+<p align = center>
+<img src="https://github.com/Zalezny/outfit_flutter/assets/65240240/b13c7d58-e92a-44b8-b5b6-ab9853602156" >
+</p>
 
 ## Zdjęcia z postępów
 
