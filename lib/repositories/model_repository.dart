@@ -11,12 +11,43 @@ class ModelRepository {
   final OutfitConnection _outfitConnection = GetIt.I<OutfitConnection>();
   final OutfitRepository _outfitRepository = OutfitRepository();
 
-  Future<List<OutfitDto>> readOutfits() async {
+  Future<List<OutfitDto>> initOutfits() async {
     try {
       final outfits = await _outfitConnection.getOutfits();
       await _outfitRepository.insertOutfits(outfits.map((outfit) => _toOutfitEntity(outfit)).toList());
     } finally {}
-    return (await _outfitRepository.readOutfits()).map((outfitEntity) => outfitEntity.toOutfitDto()).toList();
+    return (await _outfitRepository.initOutfits()).map((outfitEntity) => outfitEntity.toOutfitDto()).toList();
+  }
+
+  Future<List<OutfitDto>> readOutfitsLocal() async {
+    return (await _outfitRepository.initOutfits()).map((outfitEntity) => outfitEntity.toOutfitDto()).toList();
+  }
+
+  Future<void> insertOutfit(String outfitName) async {
+    //todo: if graphql is exist it will be change on optimization version
+    try {
+      await _outfitConnection.postOutfit(outfitName);
+      final outfits = await _outfitConnection.getOutfits();
+      await _outfitRepository.insertOutfits(outfits.map((outfit) => _toOutfitEntity(outfit)).toList());
+    } finally {}
+  }
+
+  Future<void> deleteOutfit(String id) async {
+    try {
+      await _outfitConnection.deleteOutfit(id);
+      await _outfitRepository.deleteOutfit(id);
+    } catch (e) {
+      Exception(e);
+    }
+  }
+
+  Future<void> changeEndedById(String id, bool newValue) async {
+    try {
+      await _outfitConnection.patchEndedById(id, newValue);
+      await _outfitRepository.updateEndedById(id, newValue);
+    } catch (e) {
+      Exception(e);
+    }
   }
 
   OutfitEntity _toOutfitEntity(OutfitDto outfit) {

@@ -16,14 +16,14 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'package:outfit_flutter/di/injectable.dart' as _i12;
 import 'package:outfit_flutter/isar_db/repositories/database_repository.dart'
     as _i4;
-import 'package:outfit_flutter/pages/outfit_page/bloc/outfit_bloc.dart' as _i11;
+import 'package:outfit_flutter/pages/outfit_page/bloc/outfit_bloc.dart' as _i8;
 import 'package:outfit_flutter/repositories/model_repository.dart' as _i6;
 import 'package:outfit_flutter/utils/notification_handler.dart' as _i7;
-import 'package:outfit_flutter/utils/shared_preference.dart' as _i9;
+import 'package:outfit_flutter/utils/shared_preference.dart' as _i10;
 import 'package:outfit_flutter/web_api/connections/outfit_connection.dart'
-    as _i8;
+    as _i9;
 import 'package:outfit_flutter/web_api/connections/work_time_connection.dart'
-    as _i10;
+    as _i11;
 import 'package:outfit_flutter/web_api/services/api_service.dart' as _i3;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -44,11 +44,11 @@ extension GetItInjectableX on _i1.GetIt {
         () => injectableModule.flutterBackgroundService);
     gh.lazySingleton<_i6.ModelRepository>(() => _i6.ModelRepository());
     gh.lazySingleton<_i7.NotificationHandler>(() => _i7.NotificationHandler());
-    gh.lazySingleton<_i8.OutfitConnection>(() => _i8.OutfitConnection());
-    gh.lazySingleton<_i9.SharedPreference>(() => _i9.SharedPreference());
-    gh.lazySingleton<_i10.WorkTimeConnection>(() => _i10.WorkTimeConnection());
-    gh.lazySingleton<_i11.OutfitBloc>(
-        () => _i11.OutfitBloc(gh<_i8.OutfitConnection>()));
+    gh.lazySingleton<_i8.OutfitBloc>(
+        () => _i8.OutfitBloc(gh<_i6.ModelRepository>()));
+    gh.lazySingleton<_i9.OutfitConnection>(() => _i9.OutfitConnection());
+    gh.lazySingleton<_i10.SharedPreference>(() => _i10.SharedPreference());
+    gh.lazySingleton<_i11.WorkTimeConnection>(() => _i11.WorkTimeConnection());
     return this;
   }
 }

@@ -16,4 +16,13 @@ class DatabaseRepository {
       name: schemaName,
     );
   }
+
+  Future<Isar> get database async {
+    final db = Isar.getInstance(DatabaseRepository.schemaName);
+    if (db != null) {
+      return db;
+    } else {
+      return await open();
+    }
+  }
 }

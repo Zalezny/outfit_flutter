@@ -1,9 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:outfit_flutter/repositories/model_repository.dart';
-import 'package:outfit_flutter/web_api/connections/outfit_connection.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
 part 'outfit_event.dart';
@@ -11,46 +9,38 @@ part 'outfit_state.dart';
 
 @lazySingleton
 class OutfitBloc extends Bloc<OutfitEvent, OutfitState> {
-  final OutfitConnection _outfitConnection;
-  late List<OutfitDto> outfits;
+  final ModelRepository _model;
 
-  OutfitBloc(this._outfitConnection) : super(OutfitLoadingState()) {
+  OutfitBloc(this._model) : super(OutfitLoadingState()) {
     on<OutfitEvent>((event, emit) async {
       if (event is InitOutfitEvent) {
         emit(OutfitLoadingState());
         try {
-          // outfits = (await _outfitConnection.getOutfits()).reversed.toList();
-          outfits = await GetIt.I<ModelRepository>().readOutfits();
+          final outfits = await _model.initOutfits();
           emit(OutfitSuccessState(outfits));
         } catch (e) {
           emit(OutfitFailState(e.toString()));
         }
       } else if (event is AddOutfitEvent) {
         try {
-          _outfitConnection.postOutfit(event.outfitTitle);
-          //TODO: When GraphQL is create, it will be change
-          outfits = (await _outfitConnection.getOutfits()).reversed.toList();
-          // outfits.add(event.outfit);
+          await _model.insertOutfit(event.outfitTitle);
+          final outfits = await _model.initOutfits();
           emit(OutfitSuccessState(outfits));
         } catch (e) {
           emit(OutfitFailState(e.toString()));
         }
       } else if (event is DeleteOutfitEvent) {
         try {
-          _outfitConnection.deleteOutfit(event.id);
-          final index = outfits.indexWhere((element) => element.sId == event.id);
-          outfits.removeAt(index);
+          await _model.deleteOutfit(event.id);
+          final outfits = await _model.readOutfitsLocal();
           emit(OutfitSuccessState(outfits));
         } catch (e) {
           emit(OutfitFailState(e.toString()));
         }
       } else if (event is ChangeEndedOutfitEvent) {
         try {
-          final index = outfits.indexWhere((element) => element.sId == event.id);
-          final oldOutfit = outfits[index].copyWith(ended: event.isEnded);
-          outfits.removeAt(index);
-          outfits.insert(index, oldOutfit);
-          _outfitConnection.patchEndedById(event.id, event.isEnded);
+          _model.changeEndedById(event.id, event.isEnded);
+          final outfits = await _model.readOutfitsLocal();
           emit(OutfitSuccessState(outfits));
         } catch (e) {
           emit(OutfitFailState(e.toString()));
