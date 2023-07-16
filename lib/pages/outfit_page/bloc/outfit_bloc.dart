@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
+import 'package:outfit_flutter/repositories/model_repository.dart';
 import 'package:outfit_flutter/web_api/connections/outfit_connection.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
@@ -17,7 +19,8 @@ class OutfitBloc extends Bloc<OutfitEvent, OutfitState> {
       if (event is InitOutfitEvent) {
         emit(OutfitLoadingState());
         try {
-          outfits = (await _outfitConnection.getOutfits()).reversed.toList();
+          // outfits = (await _outfitConnection.getOutfits()).reversed.toList();
+          outfits = await GetIt.I<ModelRepository>().readOutfits();
           emit(OutfitSuccessState(outfits));
         } catch (e) {
           emit(OutfitFailState(e.toString()));

@@ -65,7 +65,21 @@ const OutfitEntitySchema = CollectionSchema(
   deserialize: _outfitEntityDeserialize,
   deserializeProp: _outfitEntityDeserializeProp,
   idName: r'isarId',
-  indexes: {},
+  indexes: {
+    r'id': IndexSchema(
+      id: -3268401673993471357,
+      name: r'id',
+      unique: true,
+      replace: true,
+      properties: [
+        IndexPropertySchema(
+          name: r'id',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {r'WorkTimeEntity': WorkTimeEntitySchema},
   getId: _outfitEntityGetId,
@@ -80,24 +94,14 @@ int _outfitEntityEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  {
-    final value = object.date;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
+  bytesCount += 3 + object.date.length * 3;
   {
     final value = object.hour;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
-  {
-    final value = object.id;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
+  bytesCount += 3 + object.id.length * 3;
   {
     final list = object.kateHours;
     if (list != null) {
@@ -126,12 +130,7 @@ int _outfitEntityEstimateSize(
       }
     }
   }
-  {
-    final value = object.title;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
+  bytesCount += 3 + object.title.length * 3;
   return bytesCount;
 }
 
@@ -167,25 +166,26 @@ OutfitEntity _outfitEntityDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = OutfitEntity();
-  object.date = reader.readStringOrNull(offsets[0]);
-  object.ended = reader.readBoolOrNull(offsets[1]);
-  object.hour = reader.readStringOrNull(offsets[2]);
-  object.iV = reader.readLongOrNull(offsets[3]);
-  object.id = reader.readStringOrNull(offsets[4]);
-  object.kateHours = reader.readObjectList<WorkTimeEntity>(
-    offsets[5],
-    WorkTimeEntitySchema.deserialize,
-    allOffsets,
-    WorkTimeEntity(),
+  final object = OutfitEntity(
+    date: reader.readString(offsets[0]),
+    ended: reader.readBool(offsets[1]),
+    hour: reader.readStringOrNull(offsets[2]),
+    iV: reader.readLong(offsets[3]),
+    id: reader.readString(offsets[4]),
+    kateHours: reader.readObjectList<WorkTimeEntity>(
+      offsets[5],
+      WorkTimeEntitySchema.deserialize,
+      allOffsets,
+      WorkTimeEntity(),
+    ),
+    momHours: reader.readObjectList<WorkTimeEntity>(
+      offsets[6],
+      WorkTimeEntitySchema.deserialize,
+      allOffsets,
+      WorkTimeEntity(),
+    ),
+    title: reader.readString(offsets[7]),
   );
-  object.momHours = reader.readObjectList<WorkTimeEntity>(
-    offsets[6],
-    WorkTimeEntitySchema.deserialize,
-    allOffsets,
-    WorkTimeEntity(),
-  );
-  object.title = reader.readStringOrNull(offsets[7]);
   return object;
 }
 
@@ -197,15 +197,15 @@ P _outfitEntityDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 1:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 5:
       return (reader.readObjectList<WorkTimeEntity>(
         offset,
@@ -221,7 +221,7 @@ P _outfitEntityDeserializeProp<P>(
         WorkTimeEntity(),
       )) as P;
     case 7:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -237,6 +237,60 @@ List<IsarLinkBase<dynamic>> _outfitEntityGetLinks(OutfitEntity object) {
 
 void _outfitEntityAttach(
     IsarCollection<dynamic> col, Id id, OutfitEntity object) {}
+
+extension OutfitEntityByIndex on IsarCollection<OutfitEntity> {
+  Future<OutfitEntity?> getById(String id) {
+    return getByIndex(r'id', [id]);
+  }
+
+  OutfitEntity? getByIdSync(String id) {
+    return getByIndexSync(r'id', [id]);
+  }
+
+  Future<bool> deleteById(String id) {
+    return deleteByIndex(r'id', [id]);
+  }
+
+  bool deleteByIdSync(String id) {
+    return deleteByIndexSync(r'id', [id]);
+  }
+
+  Future<List<OutfitEntity?>> getAllById(List<String> idValues) {
+    final values = idValues.map((e) => [e]).toList();
+    return getAllByIndex(r'id', values);
+  }
+
+  List<OutfitEntity?> getAllByIdSync(List<String> idValues) {
+    final values = idValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'id', values);
+  }
+
+  Future<int> deleteAllById(List<String> idValues) {
+    final values = idValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'id', values);
+  }
+
+  int deleteAllByIdSync(List<String> idValues) {
+    final values = idValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'id', values);
+  }
+
+  Future<Id> putById(OutfitEntity object) {
+    return putByIndex(r'id', object);
+  }
+
+  Id putByIdSync(OutfitEntity object, {bool saveLinks = true}) {
+    return putByIndexSync(r'id', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllById(List<OutfitEntity> objects) {
+    return putAllByIndex(r'id', objects);
+  }
+
+  List<Id> putAllByIdSync(List<OutfitEntity> objects, {bool saveLinks = true}) {
+    return putAllByIndexSync(r'id', objects, saveLinks: saveLinks);
+  }
+}
 
 extension OutfitEntityQueryWhereSort
     on QueryBuilder<OutfitEntity, OutfitEntity, QWhere> {
@@ -317,29 +371,57 @@ extension OutfitEntityQueryWhere
       ));
     });
   }
+
+  QueryBuilder<OutfitEntity, OutfitEntity, QAfterWhereClause> idEqualTo(
+      String id) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'id',
+        value: [id],
+      ));
+    });
+  }
+
+  QueryBuilder<OutfitEntity, OutfitEntity, QAfterWhereClause> idNotEqualTo(
+      String id) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'id',
+              lower: [],
+              upper: [id],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'id',
+              lower: [id],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'id',
+              lower: [id],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'id',
+              lower: [],
+              upper: [id],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
 }
 
 extension OutfitEntityQueryFilter
     on QueryBuilder<OutfitEntity, OutfitEntity, QFilterCondition> {
-  QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> dateIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'date',
-      ));
-    });
-  }
-
-  QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition>
-      dateIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'date',
-      ));
-    });
-  }
-
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> dateEqualTo(
-    String? value, {
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -353,7 +435,7 @@ extension OutfitEntityQueryFilter
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition>
       dateGreaterThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -368,7 +450,7 @@ extension OutfitEntityQueryFilter
   }
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> dateLessThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -383,8 +465,8 @@ extension OutfitEntityQueryFilter
   }
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> dateBetween(
-    String? lower,
-    String? upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -472,26 +554,8 @@ extension OutfitEntityQueryFilter
     });
   }
 
-  QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition>
-      endedIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'ended',
-      ));
-    });
-  }
-
-  QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition>
-      endedIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'ended',
-      ));
-    });
-  }
-
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> endedEqualTo(
-      bool? value) {
+      bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'ended',
@@ -651,25 +715,8 @@ extension OutfitEntityQueryFilter
     });
   }
 
-  QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> iVIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'iV',
-      ));
-    });
-  }
-
-  QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition>
-      iVIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'iV',
-      ));
-    });
-  }
-
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> iVEqualTo(
-      int? value) {
+      int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'iV',
@@ -679,7 +726,7 @@ extension OutfitEntityQueryFilter
   }
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> iVGreaterThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -692,7 +739,7 @@ extension OutfitEntityQueryFilter
   }
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> iVLessThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -705,8 +752,8 @@ extension OutfitEntityQueryFilter
   }
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> iVBetween(
-    int? lower,
-    int? upper, {
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -721,25 +768,8 @@ extension OutfitEntityQueryFilter
     });
   }
 
-  QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> idIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'id',
-      ));
-    });
-  }
-
-  QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition>
-      idIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'id',
-      ));
-    });
-  }
-
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> idEqualTo(
-    String? value, {
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -752,7 +782,7 @@ extension OutfitEntityQueryFilter
   }
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> idGreaterThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -767,7 +797,7 @@ extension OutfitEntityQueryFilter
   }
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> idLessThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -782,8 +812,8 @@ extension OutfitEntityQueryFilter
   }
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> idBetween(
-    String? lower,
-    String? upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1138,26 +1168,8 @@ extension OutfitEntityQueryFilter
     });
   }
 
-  QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition>
-      titleIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'title',
-      ));
-    });
-  }
-
-  QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition>
-      titleIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'title',
-      ));
-    });
-  }
-
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> titleEqualTo(
-    String? value, {
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1171,7 +1183,7 @@ extension OutfitEntityQueryFilter
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition>
       titleGreaterThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1186,7 +1198,7 @@ extension OutfitEntityQueryFilter
   }
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> titleLessThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1201,8 +1213,8 @@ extension OutfitEntityQueryFilter
   }
 
   QueryBuilder<OutfitEntity, OutfitEntity, QAfterFilterCondition> titleBetween(
-    String? lower,
-    String? upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1524,13 +1536,13 @@ extension OutfitEntityQueryProperty
     });
   }
 
-  QueryBuilder<OutfitEntity, String?, QQueryOperations> dateProperty() {
+  QueryBuilder<OutfitEntity, String, QQueryOperations> dateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'date');
     });
   }
 
-  QueryBuilder<OutfitEntity, bool?, QQueryOperations> endedProperty() {
+  QueryBuilder<OutfitEntity, bool, QQueryOperations> endedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'ended');
     });
@@ -1542,13 +1554,13 @@ extension OutfitEntityQueryProperty
     });
   }
 
-  QueryBuilder<OutfitEntity, int?, QQueryOperations> iVProperty() {
+  QueryBuilder<OutfitEntity, int, QQueryOperations> iVProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'iV');
     });
   }
 
-  QueryBuilder<OutfitEntity, String?, QQueryOperations> idProperty() {
+  QueryBuilder<OutfitEntity, String, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
@@ -1568,7 +1580,7 @@ extension OutfitEntityQueryProperty
     });
   }
 
-  QueryBuilder<OutfitEntity, String?, QQueryOperations> titleProperty() {
+  QueryBuilder<OutfitEntity, String, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
     });
@@ -1596,13 +1608,18 @@ const WorkTimeEntitySchema = Schema(
       name: r'hour',
       type: IsarType.long,
     ),
-    r'minute': PropertySchema(
+    r'id': PropertySchema(
       id: 2,
+      name: r'id',
+      type: IsarType.string,
+    ),
+    r'minute': PropertySchema(
+      id: 3,
       name: r'minute',
       type: IsarType.long,
     ),
     r'second': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'second',
       type: IsarType.long,
     )
@@ -1625,6 +1642,12 @@ int _workTimeEntityEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.id;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -1636,8 +1659,9 @@ void _workTimeEntitySerialize(
 ) {
   writer.writeString(offsets[0], object.date);
   writer.writeLong(offsets[1], object.hour);
-  writer.writeLong(offsets[2], object.minute);
-  writer.writeLong(offsets[3], object.second);
+  writer.writeString(offsets[2], object.id);
+  writer.writeLong(offsets[3], object.minute);
+  writer.writeLong(offsets[4], object.second);
 }
 
 WorkTimeEntity _workTimeEntityDeserialize(
@@ -1649,8 +1673,9 @@ WorkTimeEntity _workTimeEntityDeserialize(
   final object = WorkTimeEntity();
   object.date = reader.readStringOrNull(offsets[0]);
   object.hour = reader.readLongOrNull(offsets[1]);
-  object.minute = reader.readLongOrNull(offsets[2]);
-  object.second = reader.readLongOrNull(offsets[3]);
+  object.id = reader.readStringOrNull(offsets[2]);
+  object.minute = reader.readLongOrNull(offsets[3]);
+  object.second = reader.readLongOrNull(offsets[4]);
   return object;
 }
 
@@ -1666,8 +1691,10 @@ P _workTimeEntityDeserializeProp<P>(
     case 1:
       return (reader.readLongOrNull(offset)) as P;
     case 2:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
+      return (reader.readLongOrNull(offset)) as P;
+    case 4:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1900,6 +1927,159 @@ extension WorkTimeEntityQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition>
+      idIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition>
+      idIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition> idEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition>
+      idGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition>
+      idLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition> idBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition>
+      idStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition>
+      idEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition>
+      idContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition> idMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'id',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition>
+      idIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<WorkTimeEntity, WorkTimeEntity, QAfterFilterCondition>
+      idIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'id',
+        value: '',
       ));
     });
   }

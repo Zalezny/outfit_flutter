@@ -189,7 +189,7 @@ class __$$_OutfitDtoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_OutfitDto with DiagnosticableTreeMixin implements _OutfitDto {
+class _$_OutfitDto implements _OutfitDto {
   const _$_OutfitDto(
       {@JsonKey(name: '_id') required this.sId,
       required this.title,
@@ -237,23 +237,8 @@ class _$_OutfitDto with DiagnosticableTreeMixin implements _OutfitDto {
   final bool ended;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+  String toString() {
     return 'OutfitDto(sId: $sId, title: $title, hour: $hour, date: $date, momHours: $momHours, kateHours: $kateHours, iV: $iV, ended: $ended)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'OutfitDto'))
-      ..add(DiagnosticsProperty('sId', sId))
-      ..add(DiagnosticsProperty('title', title))
-      ..add(DiagnosticsProperty('hour', hour))
-      ..add(DiagnosticsProperty('date', date))
-      ..add(DiagnosticsProperty('momHours', momHours))
-      ..add(DiagnosticsProperty('kateHours', kateHours))
-      ..add(DiagnosticsProperty('iV', iV))
-      ..add(DiagnosticsProperty('ended', ended));
   }
 
   @override

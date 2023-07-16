@@ -1,7 +1,7 @@
+
 import 'package:outfit_flutter/web_api/dto/work_time.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 
 part 'outfit_dto.freezed.dart';
 part 'outfit_dto.g.dart';
