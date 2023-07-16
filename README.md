@@ -1,13 +1,18 @@
 
 # Opis
 
-Aplikacja powstaje dla firmy dwuosobowej Katya RG Leotards zajmującej się tworzeniem strojów do lekkoatletyki gimnastycznej. Celem aplikacji jest ułatwienie rejestracji i zbierania informacji o czasie tworzenia strojów. Docelowo aplikacja przeznaczona na Androida z późniejszą możliwością rozszerzenia o iOS. Aplikacja po I etapie będzie rozszerzana o lokalną bazę danych sqflite i synchronizację jej z backendem.
+Aplikacja powstaje dla firmy dwuosobowej Katya RG Leotards zajmującej się tworzeniem strojów do lekkoatletyki gimnastycznej. Celem aplikacji jest ułatwienie rejestracji i zbierania informacji o czasie tworzenia strojów. Docelowo aplikacja przeznaczona na Androida z późniejszą możliwością rozszerzenia o iOS. Aplikacja jest tworzona na podstawie danych REST API wraz z synchronizacją z lokalną bazą danych Isar 
+
+## Instalacja
+
+Istnieje możliwość sklonowania aplikacji. Niestety, ale nie ma w niej zawartych danych połączeniowych z backendem, przez co nie ma możliwości jej załączenia. Po ukończeniu aplikacji, zostanie ona ulepszona o wersję preview, umożliwiającą zainstalowanie i działanie aplikacji opartej jedynie na lokalnej bazie danych
 
 ## Technologia
 Na chwilę obecną zastosowano takie biblioteki jak:
   - bloc - zarządzanie stanem aplikacji
-  - http - obsługa REST API
+  - isar - lokalna baza danych wykorzystywana w projekcie
   - get_it/injectable - obsługa dependency injection
+  - http - obsługa REST API
   - intl - obsługa dat
   - shared_preferences - obsługa przetrzymywania lokalnych zmian
   - nested_scroll_views - obsługa zagnieżdżonych scrollów (w tym wypadku TabBar i listView.builder)
