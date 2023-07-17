@@ -1,50 +1,53 @@
 <p align = center>
 <img src = "https://github.com/Zalezny/outfit_flutter/assets/65240240/69ece6b0-d3bb-4151-af3a-366e1c4ad358" width="600"/>
 </p>
-Aplikacja mobilna napisana dla firmy dwuosobowej Katya RG Leotards zajmującej się tworzeniem strojów do lekkoatletyki gimnastycznej. 
-Celem aplikacji jest ułatwienie rejestracji i zbierania informacji o czasie tworzenia strojów.
-Docelowo aplikacja przeznaczona na Androida z późniejszą możliwością rozszerzenia o iOS. 
-Aplikacja używa danych REST API wraz z synchronizacją z lokalną bazą danych Isar (wersja demo posiada jedynie lokalną bazę danych).
+
+Outfit App developed for Katya RG Leotards, a two-person company specializing in creating gymnastics leotards. The aim of the application is to facilitate registration and gather information about the time it takes to create the leotards.
+
+The application is initially intended for Android, with the possibility of later expanding to iOS. It utilizes REST API data and synchronizes with a local Isar database (the demo version only has a local database).
 
 
-## Instalacja
+## Instalation
 
-Na początku trzeba sklonować aplikację. Następnie przejść  na branch'a demo: `git checkout demo` (branch na którym nie występują błędy z powodu ukrytych plików) oraz załączyć aplikację w kompilatorze.
+First, you need to clone the application. Then, switch to the demo branch: `git checkout demo` (a branch where there are no errors due to hidden files) and attach the application in the compiler.
 
-## Technologia
-Na chwilę obecną zastosowano takie biblioteki jak:
-  - bloc - zarządzanie stanem aplikacji
-  - isar - lokalna baza danych wykorzystywana w projekcie
-  - get_it/injectable - obsługa dependency injection
-  - http - obsługa REST API
-  - intl - obsługa dat
-  - shared_preferences - obsługa przetrzymywania lokalnych zmian
-  - nested_scroll_views - obsługa zagnieżdżonych scrollów (w tym wypadku TabBar i listView.builder)
-  - flutter_background_service - obsługa serwisu background oraz foreground dla stopera
-  - flutter_background_service_android - obsługa serwisu dla androida
-  - awesome_notifications - obsługa lokalnych powiadomień foreground oraz ich customizacja dla stopera
-  - permission_handler - obsługa permisji dla notyfikacji >= API33
-  - freezed - obsługa autogeneracji plików dto
-  - pin_code_fields - ui dla kodu pin
-  - fluttertoast - ui dla toast'ów informujących użytkownika
-  - flutter_picker - picker dla wybrania godziny
-  - build_runner - obsługa build'u dla freezed oraz injectable
+## Technology
 
-W projekcie istnieją na chwilę obecną trzy klasy bloc: 
-- OutfitBloc - zarządzanie listą strojów oraz obsługa usuwania, dodawania, zczytywania z API itp. 
-- WorkTimeBloc - zarządzanie listą czasu pracy nad danym strojem, obsługa usuwania, dodawania, zczytywania z API itp. Bloc ten jest wyodrębniony na dwie inne: MomWorkTimeBloc oraz KatyaWorkTimeBloc poprzez mixins
-- StopwatchBloc - zarządzanie obsługą stopera. Komunikuje się także z WorkTimeBloc w celu zapisania liczonego czasu
+Used libraries:
 
-Do obsługi zapytań REST APi używany jest podział na foldery connections, dto, exceptions oraz services z biblioteką html.
+- bloc: State management for the application.
+- isar: Local database utilized in the project.
+- get_it/injectable: Dependency injection handling.
+- http: REST API handling.
+- intl: Date handling.
+- shared_preferences: Local storage for storing changes.
+- nested_scroll_views: Handling nested scrolls (in this case, TabBar and listView.builder).
+- flutter_background_service: Background and foreground service handling for the stopwatch.
+- flutter_background_service_android: Service handling for Android.
+- awesome_notifications: Handling foreground local notifications and customization for the stopwatch.
+- permission_handler: Permission handling for notifications >= API33.
+- freezed: Autogeneration of DTO files handling.
+- pin_code_fields: UI for pin code input.
+- fluttertoast: UI for informative toasts.
+- flutter_picker: Picker for selecting time.
+- build_runner: Build handling for freezed and injectable.
+
+There are three bloc classes in the project:
+
+- OutfitBloc: Manages the list of outfits and handles operations such as deletion, addition, and API retrieval.
+- WorkTimeBloc: Manages the list of work times for each outfit and handles operations such as deletion, addition, and API retrieval. This bloc is further divided into two mixins: MomWorkTimeBloc and KatyaWorkTimeBloc.
+- StopwatchBloc: Manages stopwatch functionality and communicates with the WorkTimeBloc to save the elapsed time.
+
+For handling REST API requests, the project utilizes the division into folders: connections, dto, exceptions, and services, along with the html library.
 
 
-## Schemat Architektury Aplikacji 
+## Architecture scheme
 
 <p align = center>
 <img src="https://github.com/Zalezny/outfit_flutter/assets/65240240/81dfbf5a-5d7c-40c2-8c2b-2fbf8d09ad9e" >
 </p>
 
-## Zdjęcia 
+## Screenshots
 
 <p align = center>
   <img src="https://github.com/Zalezny/outfit_flutter/assets/65240240/90f4e197-7157-472c-95fe-94224746eb2b" alt="Screenshot 0" width="350">
