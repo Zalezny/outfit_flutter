@@ -1,11 +1,13 @@
 
-# Opis
+Aplikacja mobilna napisana dla firmy dwuosobowej Katya RG Leotards zajmującej się tworzeniem strojów do lekkoatletyki gimnastycznej. 
+Celem aplikacji jest ułatwienie rejestracji i zbierania informacji o czasie tworzenia strojów.
+Docelowo aplikacja przeznaczona na Androida z późniejszą możliwością rozszerzenia o iOS. 
+Aplikacja używa danych REST API wraz z synchronizacją z lokalną bazą danych Isar (wersja demo posiada jedynie lokalną bazę danych).
 
-Aplikacja powstaje dla firmy dwuosobowej Katya RG Leotards zajmującej się tworzeniem strojów do lekkoatletyki gimnastycznej. Celem aplikacji jest ułatwienie rejestracji i zbierania informacji o czasie tworzenia strojów. Docelowo aplikacja przeznaczona na Androida z późniejszą możliwością rozszerzenia o iOS. Aplikacja jest tworzona na podstawie danych REST API wraz z synchronizacją z lokalną bazą danych Isar 
 
 ## Instalacja
 
-Istnieje możliwość sklonowania aplikacji. Niestety, ale nie ma w niej zawartych danych połączeniowych z backendem, przez co nie ma możliwości jej załączenia. Po ukończeniu aplikacji, zostanie ona ulepszona o wersję preview, umożliwiającą zainstalowanie i działanie aplikacji opartej jedynie na lokalnej bazie danych
+Na początku trzeba sklonować aplikację. Następnie przejść  na branch'a demo: `git checkout demo` (branch na którym nie występują błędy z powodu ukrytych plików) oraz załączyć aplikację w kompilatorze.
 
 ## Technologia
 Na chwilę obecną zastosowano takie biblioteki jak:
@@ -19,6 +21,7 @@ Na chwilę obecną zastosowano takie biblioteki jak:
   - flutter_background_service - obsługa serwisu background oraz foreground dla stopera
   - flutter_background_service_android - obsługa serwisu dla androida
   - awesome_notifications - obsługa lokalnych powiadomień foreground oraz ich customizacja dla stopera
+  - permission_handler - obsługa permisji dla notyfikacji >= API33
   - freezed - obsługa autogeneracji plików dto
   - pin_code_fields - ui dla kodu pin
   - fluttertoast - ui dla toast'ów informujących użytkownika
@@ -30,16 +33,16 @@ W projekcie istnieją na chwilę obecną trzy klasy bloc:
 - WorkTimeBloc - zarządzanie listą czasu pracy nad danym strojem, obsługa usuwania, dodawania, zczytywania z API itp. Bloc ten jest wyodrębniony na dwie inne: MomWorkTimeBloc oraz KatyaWorkTimeBloc poprzez mixins
 - StopwatchBloc - zarządzanie obsługą stopera. Komunikuje się także z WorkTimeBloc w celu zapisania liczonego czasu
 
-Do obsługi zapytań REST APi używany jest podział na foldery connections, dto, exceptions oraz services.
+Do obsługi zapytań REST APi używany jest podział na foldery connections, dto, exceptions oraz services z biblioteką html.
 
 
-## Schemat komunikacji pomiędzy UI, Blocem a Model'em 
+## Schemat Architektury Aplikacji 
 
 <p align = center>
-<img src="https://github.com/Zalezny/outfit_flutter/assets/65240240/b13c7d58-e92a-44b8-b5b6-ab9853602156" >
+<img src="https://github.com/Zalezny/outfit_flutter/assets/65240240/81dfbf5a-5d7c-40c2-8c2b-2fbf8d09ad9e" >
 </p>
 
-## Zdjęcia z postępów
+## Zdjęcia 
 
 <p align = center>
   <img src="https://github.com/Zalezny/outfit_flutter/assets/65240240/90f4e197-7157-472c-95fe-94224746eb2b" alt="Screenshot 0" width="350">
