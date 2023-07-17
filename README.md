@@ -7,7 +7,7 @@ Outfit App developed for Katya RG Leotards, a two-person company specializing in
 The application is initially intended for Android, with the possibility of later expanding to iOS. It utilizes REST API data and synchronizes with a local Isar database (the demo version only has a local database).
 
 
-## Instalation
+## Installation
 
 First, you need to clone the application. Then, switch to the demo branch: `git checkout demo` (a branch where there are no errors due to hidden files) and attach the application in the compiler.
 
@@ -64,3 +64,5 @@ For handling REST API requests, the project utilizes the division into folders: 
 &nbsp
   <img src="https://github.com/Zalezny/outfit_flutter/assets/65240240/925cf9c4-5149-417e-9740-51e1abc10957" alt="Screenshot 6" width="350">
 </p>
+
+
