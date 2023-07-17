@@ -1,4 +1,6 @@
-
+<p align = center>
+<img src = "https://github.com/Zalezny/outfit_flutter/assets/65240240/69ece6b0-d3bb-4151-af3a-366e1c4ad358" width="600"/>
+</p>
 Aplikacja mobilna napisana dla firmy dwuosobowej Katya RG Leotards zajmującej się tworzeniem strojów do lekkoatletyki gimnastycznej. 
 Celem aplikacji jest ułatwienie rejestracji i zbierania informacji o czasie tworzenia strojów.
 Docelowo aplikacja przeznaczona na Androida z późniejszą możliwością rozszerzenia o iOS. 
