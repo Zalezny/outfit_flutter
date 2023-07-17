@@ -6,8 +6,9 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:outfit_flutter/isar_db/repositories/database_repository.dart';
 import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
 import 'package:outfit_flutter/services/stopwatch_service.dart';
-import 'pages/app_page/app.dart';
+
 import 'di/injectable.dart';
+import 'pages/app_page/app.dart';
 
 void main() async {
   String? route;

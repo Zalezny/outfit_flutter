@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:outfit_flutter/controllers/notification_controller.dart';
 import 'package:outfit_flutter/models/stopwatch_notification_model.dart';
 import 'package:outfit_flutter/services/service_event.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
 import 'package:outfit_flutter/utils/time_utils.dart';
 
@@ -34,20 +34,6 @@ class StopwatchService {
       debug: true,
     );
 
-    /*
-      const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      notificationChannelId,
-      notificationTitle,
-      description: 'This channel is used for katya stoper.',
-      importance: Importance.max,
-    );
-
-    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-*/
     await service.configure(
       androidConfiguration: AndroidConfiguration(
         onStart: onStart,
@@ -70,7 +56,6 @@ class StopwatchService {
   static Future<void> onStart(ServiceInstance service) async {
     DartPluginRegistrant.ensureInitialized();
 
-    //final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     final awesomeNotifications = AwesomeNotifications();
     Map<String, String>? payload;
     if (service is AndroidServiceInstance) {
@@ -118,24 +103,6 @@ class StopwatchService {
               ),
             ],
           );
-
-          /*
-          flutterLocalNotificationsPlugin.show(
-            notificationId,
-            'Stoper Katya',
-            'Twój czas to: ${TimeUtils.stringifyTimeByInt(duration)}',
-            const NotificationDetails(
-              android: AndroidNotificationDetails(
-                notificationChannelId,
-                notificationTitle,
-                icon: 'katya_logo',
-                colorized: true,
-                color: AppColors.red_1867,
-                ongoing: true,
-              ),
-            ),
-          );
-          */
         }
       }
 

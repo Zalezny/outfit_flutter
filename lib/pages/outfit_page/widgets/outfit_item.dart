@@ -1,8 +1,10 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfit_flutter/custom_widgets/custom_dialog.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../stopwatch_pager/stopwatch_pager.dart';
 
@@ -19,7 +21,8 @@ class OutfitItem extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.all(12),
         child: InkWell(
-          onTap: () {
+          onTap: () async {
+            await Permission.notification.request();
             Navigator.pushNamed(
               context,
               '/stopwatch-pager',

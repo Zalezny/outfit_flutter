@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:outfit_flutter/custom_widgets/custom_dialog.dart';
 import 'package:outfit_flutter/pages/stopwatch_page/bloc/stopwatch_bloc.dart';
 import 'package:outfit_flutter/theme/app_colors.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class StopwatchCard extends StatelessWidget {
   final String topText;
@@ -40,7 +42,8 @@ class StopwatchCard extends StatelessWidget {
           Flexible(
             fit: FlexFit.loose,
             child: InkWell(
-              onTap: () {
+              onTap: () async {
+                if(await Permission.notification.isGranted){
                 isStopwatchGo
                     ? showDialog(
                         context: context,
@@ -55,6 +58,9 @@ class StopwatchCard extends StatelessWidget {
                             primaryButtonText: 'TAK',
                             secondaryButtonText: 'NIE'))
                     : BlocProvider.of<StopwatchBloc>(context).add(StartStopwatchEvent(outfitId));
+                } else {
+                  Fluttertoast.showToast(msg: 'Prosze o dodanie w opcjach permisji do notyfikacji!');
+                }
               },
               child: Image.asset(
                 isStopwatchGo ? 'assets/images/stoper_go.png' : 'assets/images/stoper_rest.png',
