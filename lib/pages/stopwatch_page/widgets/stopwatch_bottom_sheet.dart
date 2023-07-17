@@ -91,7 +91,7 @@ class _StopwatchBottomSheetState extends State<StopwatchBottomSheet> {
     }
   }
 
-  void _selectDateTime(BuildContext context) async {
+  void _selectDateTime(context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),

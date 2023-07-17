@@ -50,9 +50,9 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
         }
       } else if (event is CheckStopwatchEvent) {
         if (await _flutterBackgroundService.isRunning()) {
-          final _sharedPref = GetIt.I<SharedPreference>();
-          final isFinish = await _sharedPref.isFinishStopwatch();
-          _sharedPref.saveIsFinishStopwatch(false);
+          final sharedPref = GetIt.I<SharedPreference>();
+          final isFinish = await sharedPref.isFinishStopwatch();
+          sharedPref.saveIsFinishStopwatch(false);
           _subscription = _flutterBackgroundService.on(ServiceEvent.update).listen((body) {
             if (body != null) {
               if (isFinish == true) {

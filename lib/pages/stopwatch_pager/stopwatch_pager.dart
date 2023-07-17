@@ -8,7 +8,6 @@ import 'package:outfit_flutter/pages/work_time_page/work_time_page.dart';
 import 'package:outfit_flutter/repositories/model_repository.dart';
 import 'package:outfit_flutter/utils/custom_physics.dart';
 import 'package:outfit_flutter/web_api/connections/outfit_connection.dart';
-import 'package:outfit_flutter/web_api/connections/work_time_connection.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
 import '../outfit_page/bloc/outfit_bloc.dart';
