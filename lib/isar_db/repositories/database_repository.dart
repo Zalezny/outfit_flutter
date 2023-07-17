@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 @lazySingleton
 class DatabaseRepository {
-  static const _schema = [OutfitEntitySchema];
+  static const _schema = [OutfitEntitySchema, WorkTimeEntitySchema];
   static const schemaName = 'OutfitSchema';
 
   Future<Isar> open() async {

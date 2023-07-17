@@ -22,61 +22,75 @@ class OutfitEntity {
 
   bool ended;
 
-  List<WorkTimeEntity>? momHours;
+  final momHours = IsarLinks<WorkTimeEntity>();
 
-  List<WorkTimeEntity>? kateHours;
-  OutfitEntity(
-      {required this.id,
-      required this.title,
-      required this.hour,
-      required this.date,
-      required this.iV,
-      required this.ended,
-      this.kateHours,
-      this.momHours});
+  final kateHours = IsarLinks<WorkTimeEntity>();
+
+  OutfitEntity({
+    required this.id,
+    required this.title,
+    required this.hour,
+    required this.date,
+    required this.iV,
+    required this.ended,
+  });
 
   OutfitDto toOutfitDto() => OutfitDto(
       sId: id,
       title: title,
       date: date,
-      momHours: momHours!
+      momHours: momHours
           .map((workTimeEntity) => WorkTime(
-              hour: workTimeEntity.hour!,
-              minute: workTimeEntity.minute!,
-              second: workTimeEntity.second!,
-              date: workTimeEntity.date!,
-              sId: workTimeEntity.id!))
+              hour: workTimeEntity.hour,
+              minute: workTimeEntity.minute,
+              second: workTimeEntity.second,
+              date: workTimeEntity.date,
+              sId: workTimeEntity.id))
           .toList(),
-      kateHours: kateHours!
+      kateHours: kateHours
           .map((workTimeEntity) => WorkTime(
-              hour: workTimeEntity.hour!,
-              minute: workTimeEntity.minute!,
-              second: workTimeEntity.second!,
-              date: workTimeEntity.date!,
-              sId: workTimeEntity.id!))
+              hour: workTimeEntity.hour,
+              minute: workTimeEntity.minute,
+              second: workTimeEntity.second,
+              date: workTimeEntity.date,
+              sId: workTimeEntity.id))
           .toList(),
       iV: iV,
       ended: ended,
       hour: hour);
 }
 
-@embedded
+@collection
 class WorkTimeEntity {
-  String? id;
+  @Index(unique: true, replace: true)
+  String id;
 
-  int? hour;
+  Id get isarId => fastHash(id);
 
-  int? minute;
+  int hour;
 
-  int? second;
+  int minute;
 
-  String? date;
+  int second;
+
+  String date;
+
+  bool isKatya;
+
+  WorkTimeEntity({
+    required this.id,
+    required this.hour,
+    required this.date,
+    required this.minute,
+    required this.isKatya,
+    required this.second,
+  });
 
   WorkTime toWorkTimeDto() => WorkTime(
-        hour: hour!,
-        minute: minute!,
-        second: second!,
-        date: date!,
-        sId: id!,
+        hour: hour,
+        minute: minute,
+        second: second,
+        date: date,
+        sId: id,
       );
 }

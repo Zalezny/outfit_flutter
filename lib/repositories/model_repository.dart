@@ -1,10 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:isar/isar.dart';
 import 'package:outfit_flutter/isar_db/models/outfit_entity.dart';
 import 'package:outfit_flutter/isar_db/repositories/outfit_repository.dart';
 import 'package:outfit_flutter/isar_db/repositories/work_time_repository.dart';
-import 'package:outfit_flutter/utils/shared_preference.dart';
 import 'package:outfit_flutter/web_api/connections/work_time_connection.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
@@ -56,24 +54,34 @@ class ModelRepository {
     }
   }
 
-  Future<List<WorkTime>> readWorkTime(String outfitId, bool isKatyaTab) async {
+  Future<void> initWorkTimes(String outfitId, bool isKatyaTab) async {
     final repo = WorkTimeRepository(outfitId, isKatyaTab);
     repo.init();
+    try {
+      final workTimes = await _workTimeConnection.getWorkTimes(outfitId, isKatyaTab);
+      await repo.insertWorkTimes(workTimes.map((workTimeDto) => _toWorkTimeEntity(workTimeDto, isKatyaTab)).toList());
+    } catch (e) {
+      Exception(e);
+    }
+   
+  }
+
+  Future<List<WorkTime>> readWorkTime(String outfitId, bool isKatyaTab) async {
+    final repo = WorkTimeRepository(outfitId, isKatyaTab);
+    await repo.init();
     final entities = await repo.readWorkTime();
     if (entities != null) return entities.map((entity) => entity.toWorkTimeDto()).toList();
     return [];
   }
 
   Future<String?> insertWorkTime(String outfitId, WorkTime workTime, bool isKatyaTab) async {
-    final isKatya = await GetIt.I<SharedPreference>().getIsKatya();
     final repo = WorkTimeRepository(outfitId, isKatyaTab);
-    repo.init();
-
-    if (isKatya == null) return null;
+    await repo.init();
 
     try {
-      await repo.insertWorkTime(_toWorkTimeEntity(workTime));
-      return await _workTimeConnection.insertWorkTime(outfitId, workTime, isKatya);
+      final workTimeId =  await _workTimeConnection.insertWorkTime(outfitId, workTime, isKatyaTab);
+      await repo.insertWorkTime(_toWorkTimeEntity(workTime.copyWith(sId: workTimeId), isKatyaTab));
+      return workTimeId;
     } catch (e) {
       Exception(e);
     }
@@ -82,13 +90,23 @@ class ModelRepository {
 
   Future<void> deleteWorkTime(String outfitId, String workTimeId, bool isKatyaTab) async {
     final repo = WorkTimeRepository(outfitId, isKatyaTab);
-    repo.init();
+    await repo.init();
     try {
       await _workTimeConnection.deleteWorkTime(outfitId, workTimeId, isKatyaTab);
       await repo.deleteWorkTime(workTimeId);
     } catch (e) {
       Exception(e);
     }
+  }
+
+  Future<void> insertLocallyWorkTime(String outfitId, bool isKatyaTab, WorkTime workTime) async {
+    final repo = WorkTimeRepository(outfitId, isKatyaTab);
+    await repo.insertWorkTime(_toWorkTimeEntity(workTime, isKatyaTab));
+  }
+
+  Future<void> deleteLocallyWorkTime(String outfitId, bool isKatyaTab, String workTimeId) async {
+    final repo = WorkTimeRepository(outfitId, isKatyaTab);
+    await repo.deleteWorkTime(workTimeId);
   }
 
   OutfitEntity _toOutfitEntity(OutfitDto outfit) {
@@ -99,35 +117,17 @@ class ModelRepository {
       iV: outfit.iV,
       hour: outfit.hour,
       ended: outfit.ended,
-      kateHours: outfit.kateHours
-          .map(
-            (workTime) => WorkTimeEntity()
-              ..date = workTime.date
-              ..hour = workTime.hour
-              ..id = workTime.sId
-              ..minute = workTime.minute
-              ..second = workTime.second,
-          )
-          .toList(),
-      momHours: outfit.momHours
-          .map(
-            (workTime) => WorkTimeEntity()
-              ..date = workTime.date
-              ..hour = workTime.hour
-              ..id = workTime.sId
-              ..minute = workTime.minute
-              ..second = workTime.second,
-          )
-          .toList(),
     );
   }
 
-  WorkTimeEntity _toWorkTimeEntity(WorkTime workTime) {
-    return WorkTimeEntity()
-      ..date = workTime.date
-      ..hour = workTime.hour
-      ..id = workTime.sId
-      ..minute = workTime.minute
-      ..second = workTime.second;
+  WorkTimeEntity _toWorkTimeEntity(WorkTime workTime, bool isKatya) {
+    return WorkTimeEntity(
+      id: workTime.sId,
+      date: workTime.date,
+      hour: workTime.hour,
+      minute: workTime.minute,
+      second: workTime.second,
+      isKatya: isKatya,
+    );
   }
 }
