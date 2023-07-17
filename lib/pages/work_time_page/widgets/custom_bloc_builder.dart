@@ -11,11 +11,11 @@ class CustomBlocBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return isKatyaPage
         ? BlocBuilder<KatyaWorkTimeBloc, WorkTimeState>(
-            bloc: BlocProvider.of<KatyaWorkTimeBloc>(context)..add(InitWorkTimeEvent("ttt")),
+            bloc: BlocProvider.of<KatyaWorkTimeBloc>(context)..add(InitWorkTimeEvent()),
             builder: builder,
           )
         : BlocBuilder<MomWorkTimeBloc, WorkTimeState>(
-            bloc: BlocProvider.of<MomWorkTimeBloc>(context)..add(InitWorkTimeEvent("ttt")),
+            bloc: BlocProvider.of<MomWorkTimeBloc>(context)..add(InitWorkTimeEvent()),
             builder: builder,
           );
   }

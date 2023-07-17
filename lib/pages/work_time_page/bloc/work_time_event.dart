@@ -25,6 +25,5 @@ class InsertLocallyWorkTimeEvent extends WorkTimeEvent {
 }
 
 class InitWorkTimeEvent extends WorkTimeEvent {
-  final String id;
-  InitWorkTimeEvent(this.id);
+  InitWorkTimeEvent();
 }

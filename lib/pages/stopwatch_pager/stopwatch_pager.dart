@@ -5,6 +5,7 @@ import 'package:nested_scroll_views/material.dart';
 import 'package:outfit_flutter/pages/stopwatch_page/stopwatch_page.dart';
 import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/pages/work_time_page/work_time_page.dart';
+import 'package:outfit_flutter/repositories/model_repository.dart';
 import 'package:outfit_flutter/utils/custom_physics.dart';
 import 'package:outfit_flutter/web_api/connections/outfit_connection.dart';
 import 'package:outfit_flutter/web_api/connections/work_time_connection.dart';
@@ -74,9 +75,9 @@ class _StopwatchPagerState extends State<StopwatchPager> {
           child: MultiBlocProvider(
             providers: [
               BlocProvider<MomWorkTimeBloc>(
-                  create: ((_) => WorkTimeBloc(GetIt.I<WorkTimeConnection>(), false, outfit!.sId))),
+                  create: ((_) => WorkTimeBloc(GetIt.I<ModelRepository>(), false, outfit!.sId))),
               BlocProvider<KatyaWorkTimeBloc>(
-                  create: ((_) => WorkTimeBloc(GetIt.I<WorkTimeConnection>(), true, outfit!.sId))),
+                  create: ((_) => WorkTimeBloc(GetIt.I<ModelRepository>(), true, outfit!.sId))),
             ],
             child: NestedPageView(
               wantKeepAlive: true,

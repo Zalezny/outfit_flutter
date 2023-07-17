@@ -56,33 +56,37 @@ class ModelRepository {
     }
   }
 
-  Future<List<WorkTime>> readWorkTime(String outfitId) async {
-    final repo = WorkTimeRepository(outfitId);
+  Future<List<WorkTime>> readWorkTime(String outfitId, bool isKatyaTab) async {
+    final repo = WorkTimeRepository(outfitId, isKatyaTab);
+    repo.init();
     final entities = await repo.readWorkTime();
     if (entities != null) return entities.map((entity) => entity.toWorkTimeDto()).toList();
     return [];
   }
 
-  Future<void> insertWorkTime(String outfitId, WorkTime workTime) async {
+  Future<String?> insertWorkTime(String outfitId, WorkTime workTime, bool isKatyaTab) async {
     final isKatya = await GetIt.I<SharedPreference>().getIsKatya();
-    final repo = WorkTimeRepository(outfitId);
+    final repo = WorkTimeRepository(outfitId, isKatyaTab);
+    repo.init();
 
-    if (isKatya == null) return;
+    if (isKatya == null) return null;
 
     try {
-      await _workTimeConnection.insertWorkTime(outfitId, workTime, isKatya);
       await repo.insertWorkTime(_toWorkTimeEntity(workTime));
+      return await _workTimeConnection.insertWorkTime(outfitId, workTime, isKatya);
     } catch (e) {
       Exception(e);
     }
+    return null;
   }
 
   Future<void> deleteWorkTime(String outfitId, String workTimeId, bool isKatyaTab) async {
-    final repo = WorkTimeRepository(outfitId);
+    final repo = WorkTimeRepository(outfitId, isKatyaTab);
+    repo.init();
     try {
       await _workTimeConnection.deleteWorkTime(outfitId, workTimeId, isKatyaTab);
       await repo.deleteWorkTime(workTimeId);
-    } catch(e) {
+    } catch (e) {
       Exception(e);
     }
   }
