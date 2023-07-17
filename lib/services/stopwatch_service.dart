@@ -29,6 +29,7 @@ class StopwatchService {
           channelDescription: notificationTitle,
           defaultColor: AppColors.red_1867,
           importance: NotificationImportance.Max,
+          playSound: false,
         )
       ],
       debug: true,
