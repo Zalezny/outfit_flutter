@@ -13,26 +13,27 @@ class WorkTimeBloc extends Bloc<WorkTimeEvent, WorkTimeState> with KatyaWorkTime
   final bool _isKatyaLists;
   final String _outfitId;
   final ModelRepository _model;
+  late List<WorkTime> _localWorkTimes;
   WorkTimeBloc(this._model, this._isKatyaLists, this._outfitId) : super(WorkTimeLoadingState()) {
     on<WorkTimeEvent>((event, emit) async {
       try {
         if (event is InitWorkTimeEvent) {
           emit(WorkTimeLoadingState());
           await _model.initWorkTimes(_outfitId, _isKatyaLists);
-          emit(WorkTimeSuccessState(await _model.readWorkTime(_outfitId, _isKatyaLists)));
+          _localWorkTimes = await _model.readWorkTime(_outfitId, _isKatyaLists);
         } else if (event is DeleteWorkTimeEvent) {
           _model.deleteWorkTime(_outfitId, event.workTimeId, _isKatyaLists);
-          emit(WorkTimeSuccessState(await _model.readWorkTime(_outfitId, _isKatyaLists)));
+          _localWorkTimes = await _model.readWorkTime(_outfitId, _isKatyaLists);
         } else if (event is AddWorkTimeEvent) {
           await _model.insertWorkTime(_outfitId, event.workTime, _isKatyaLists);
-          emit(WorkTimeSuccessState(await _model.readWorkTime(_outfitId, _isKatyaLists)));
+          _localWorkTimes = await _model.readWorkTime(_outfitId, _isKatyaLists);
         } else if (event is InsertLocallyWorkTimeEvent) {
           _model.insertLocallyWorkTime(_outfitId, _isKatyaLists, event.workTime);
-          emit(WorkTimeSuccessState(await _model.readWorkTime(_outfitId, _isKatyaLists)));
+          _localWorkTimes.insert(event.index, event.workTime);
         } else if (event is DeleteLocallyWorkTimeEvent) {
-          _model.deleteLocallyWorkTime(_outfitId, _isKatyaLists, event.workTimeId);
-          emit(WorkTimeSuccessState(await _model.readWorkTime(_outfitId, _isKatyaLists)));
+          _localWorkTimes.removeWhere((element) => element.sId == event.workTimeId);
         }
+        emit(WorkTimeSuccessState(_localWorkTimes));
       } catch (e) {
         emit(WorkTimeFailState(e.toString()));
       }
