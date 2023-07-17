@@ -19,7 +19,7 @@ class WorkTimeBloc extends Bloc<WorkTimeEvent, WorkTimeState> with KatyaWorkTime
       try {
         if (event is InitWorkTimeEvent) {
           emit(WorkTimeLoadingState());
-          await _model.initWorkTimes(_outfitId, _isKatyaLists);
+          await _model.readWorkTime(_outfitId, _isKatyaLists);
           _localWorkTimes = await _model.readWorkTime(_outfitId, _isKatyaLists);
         } else if (event is DeleteWorkTimeEvent) {
           _model.deleteWorkTime(_outfitId, event.workTimeId, _isKatyaLists);

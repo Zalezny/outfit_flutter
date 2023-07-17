@@ -7,7 +7,6 @@ import 'package:outfit_flutter/pages/work_time_page/bloc/work_time_bloc.dart';
 import 'package:outfit_flutter/pages/work_time_page/work_time_page.dart';
 import 'package:outfit_flutter/repositories/model_repository.dart';
 import 'package:outfit_flutter/utils/custom_physics.dart';
-import 'package:outfit_flutter/web_api/connections/outfit_connection.dart';
 import 'package:outfit_flutter/web_api/dto/outfit_dto.dart';
 
 import '../outfit_page/bloc/outfit_bloc.dart';
@@ -43,7 +42,7 @@ class _StopwatchPagerState extends State<StopwatchPager> {
       return SafeArea(
         child: Scaffold(
           body: FutureBuilder(
-            future: GetIt.I<OutfitConnection>().getOutfits(),
+            future: GetIt.I<ModelRepository>().readOutfitsLocal(),
             builder: (ctx, snapshot) {
               if (snapshot.hasData) {
                 outfit = snapshot.data!.where((element) => element.sId == widget.outfitId).first;

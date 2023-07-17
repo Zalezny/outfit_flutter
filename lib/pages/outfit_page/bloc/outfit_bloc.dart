@@ -16,7 +16,7 @@ class OutfitBloc extends Bloc<OutfitEvent, OutfitState> {
       if (event is InitOutfitEvent) {
         emit(OutfitLoadingState());
         try {
-          final outfits = await _model.initOutfits();
+          final outfits = await _model.readOutfitsLocal();
           emit(OutfitSuccessState(outfits));
         } catch (e) {
           emit(OutfitFailState(e.toString()));
@@ -24,7 +24,7 @@ class OutfitBloc extends Bloc<OutfitEvent, OutfitState> {
       } else if (event is AddOutfitEvent) {
         try {
           await _model.insertOutfit(event.outfitTitle);
-          final outfits = await _model.initOutfits();
+          final outfits = await _model.readOutfitsLocal();
           emit(OutfitSuccessState(outfits));
         } catch (e) {
           emit(OutfitFailState(e.toString()));
