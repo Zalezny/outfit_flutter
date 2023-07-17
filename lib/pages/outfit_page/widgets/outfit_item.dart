@@ -23,11 +23,13 @@ class OutfitItem extends StatelessWidget {
         child: InkWell(
           onTap: () async {
             await Permission.notification.request();
-            Navigator.pushNamed(
-              context,
-              '/stopwatch-pager',
-              arguments: outfit,
-            );
+            if (context.mounted) {
+              Navigator.pushNamed(
+                context,
+                '/stopwatch-pager',
+                arguments: outfit,
+              );
+            }
           },
           child: Stack(alignment: Alignment.centerRight, children: [
             Center(

@@ -43,21 +43,23 @@ class StopwatchCard extends StatelessWidget {
             fit: FlexFit.loose,
             child: InkWell(
               onTap: () async {
-                if(await Permission.notification.isGranted){
-                isStopwatchGo
-                    ? showDialog(
-                        context: context,
-                        builder: (ctx) => CustomDialog(
-                            onPrimaryButton: () {
-                              BlocProvider.of<StopwatchBloc>(context).add(FinishStopwatchEvent());
-                              Navigator.of(context).pop();
-                            },
-                            onSecondaryButton: null,
-                            title: 'Czy chcesz zakończyć?',
-                            description: 'Twój czas zostanie zapisany do $outfitName',
-                            primaryButtonText: 'TAK',
-                            secondaryButtonText: 'NIE'))
-                    : BlocProvider.of<StopwatchBloc>(context).add(StartStopwatchEvent(outfitId));
+                if (await Permission.notification.isGranted) {
+                  if (context.mounted) {
+                    isStopwatchGo
+                        ? showDialog(
+                            context: context,
+                            builder: (ctx) => CustomDialog(
+                                onPrimaryButton: () {
+                                  BlocProvider.of<StopwatchBloc>(context).add(FinishStopwatchEvent());
+                                  Navigator.of(context).pop();
+                                },
+                                onSecondaryButton: null,
+                                title: 'Czy chcesz zakończyć?',
+                                description: 'Twój czas zostanie zapisany do $outfitName',
+                                primaryButtonText: 'TAK',
+                                secondaryButtonText: 'NIE'))
+                        : BlocProvider.of<StopwatchBloc>(context).add(StartStopwatchEvent(outfitId));
+                  }
                 } else {
                   Fluttertoast.showToast(msg: 'Prosze o dodanie w opcjach permisji do notyfikacji!');
                 }
